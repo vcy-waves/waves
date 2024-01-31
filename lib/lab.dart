@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'services/notification.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 void main() => runApp(const Lab());
 
@@ -19,21 +20,44 @@ class _LabState extends State<Lab> {
     super.initState();
     NotificationService.initial(flutterLocalNotificationsPlugin);
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: TextButton(
-            child: const Text('notification'),
-            onPressed: () async {
-              await NotificationService.showNotification(
-                title: 'notification title',
-                body: 'notification body',
-                flutterLocalNotificationsPlugin:
-                    flutterLocalNotificationsPlugin,
-              );
-            },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                child: const Text('notification'),
+                onPressed: () async {
+                  await NotificationService.showNotification(
+                    title: 'notification title',
+                    body: 'notification body',
+                    flutterLocalNotificationsPlugin:
+                        flutterLocalNotificationsPlugin,
+                  );
+                },
+              ),
+              TextButton(
+                onPressed: () async{
+                  Email mail = Email(
+                    recipients: ['lichyo003@gmail.com'],
+                    subject: 'wave subject',
+                    cc: ['lichyo003@gmail.com', 'ttcyt1029@gmail.com'],
+                    body: 'Hi there, we invite you to tidy up \${ocean}',
+                    isHTML: false,
+                  );
+                  try {
+                    await FlutterEmailSender.send(mail);
+                  } catch (exception) {
+                    print(exception);
+                  }
+                },
+                child: const Text('sending email'),
+              ),
+            ],
           ),
         ),
       ),
