@@ -3,6 +3,7 @@ import 'services/notification.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'constants.dart';
+import 'services/location.dart';
 
 void main() => runApp(const Lab());
 
@@ -34,14 +35,15 @@ class _LabState extends State<Lab> {
                 child: const Text('notification'),
                 onPressed: () async {
                   await NotificationService.showNotification(
-                    notiModel: NotificationService.notiTemplate[NotiType.immediate]!,
+                    notiModel:
+                        NotificationService.notiTemplate[NotiType.immediate]!,
                     flutterLocalNotificationsPlugin:
                         flutterLocalNotificationsPlugin,
                   );
                 },
               ),
               TextButton(
-                onPressed: () async{
+                onPressed: () async {
                   Email mail = Email(
                     recipients: ['lichyo003@gmail.com'],
                     subject: 'wave subject',
@@ -56,6 +58,14 @@ class _LabState extends State<Lab> {
                   }
                 },
                 child: const Text('sending email'),
+              ),
+              TextButton(
+                onPressed: () async{
+                  final location = await LocatingService.determinePosition();
+                  print(location.latitude);
+                  print(location.longitude);
+                },
+                child: const Text('locate'),
               ),
             ],
           ),
