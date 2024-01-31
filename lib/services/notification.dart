@@ -1,6 +1,30 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
+  static Map<NotiType, NotiModel> notiTemplate = {
+    NotiType.normal: NotiModel(
+      title: 'Waves',
+      body: 'Ocean need\'s you !',
+      location: '六塊厝漁港',
+      organizer: 'Chi-Yu, Li',
+      time: DateTime.now(),
+    ),
+    NotiType.fine: NotiModel(
+      title: 'Waves',
+      body: 'Come to visit this gorgeous ocean ~',
+      location: '六塊厝漁港',
+      organizer: 'Chi-Yu, Li',
+      time: DateTime.now(),
+    ),
+    NotiType.immediate: NotiModel(
+      title: 'Waves',
+      body: 'Ocean need\'s you right now ! ! !',
+      location: '六塊厝漁港',
+      organizer: 'Chi-Yu, Li',
+      time: DateTime.now(),
+    ),
+  };
+
   static Future initial(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
     AndroidInitializationSettings android =
@@ -36,4 +60,23 @@ class NotificationService {
       notificationDetails,
     );
   }
+}
+
+
+enum NotiType { normal, immediate, fine }
+
+class NotiModel {
+  String title;
+  String body;
+  String organizer;
+  DateTime time;
+  String location;
+
+  NotiModel({
+    required this.title,
+    required this.body,
+    required this.location,
+    required this.organizer,
+    required this.time,
+  });
 }
