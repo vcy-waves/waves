@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:waves/constants.dart';
 
 class NotificationService {
   static Map<NotiType, NotiModel> notiTemplate = {
@@ -37,8 +38,7 @@ class NotificationService {
 
   static Future<void> showNotification({
     var id = 0,
-    required String title,
-    required String body,
+    required NotiModel notiModel,
     var payload,
     required FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin,
   }) async {
@@ -55,15 +55,12 @@ class NotificationService {
     );
     await flutterLocalNotificationsPlugin.show(
       0,
-      title,
-      body,
+      notiModel.title,
+      notiModel.body,
       notificationDetails,
     );
   }
 }
-
-
-enum NotiType { normal, immediate, fine }
 
 class NotiModel {
   String title;

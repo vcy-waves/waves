@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'services/notification.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'constants.dart';
 
 void main() => runApp(const Lab());
 
@@ -33,8 +34,7 @@ class _LabState extends State<Lab> {
                 child: const Text('notification'),
                 onPressed: () async {
                   await NotificationService.showNotification(
-                    title: 'notification title',
-                    body: 'notification body',
+                    notiModel: NotificationService.notiTemplate[NotiType.immediate]!,
                     flutterLocalNotificationsPlugin:
                         flutterLocalNotificationsPlugin,
                   );
