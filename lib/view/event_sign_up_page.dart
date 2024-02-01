@@ -41,7 +41,7 @@ class _EventSignUpPageState extends State<EventSignUpPage> {
           children: [
             Center(
               child: Text(
-                widget.event.location,
+                widget.event.location.name,
                 style:
                     const TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
               ),

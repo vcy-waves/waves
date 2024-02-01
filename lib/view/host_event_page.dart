@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:waves/model/event.dart';
-
 import 'package:waves/model/location.dart';
 
 class HostEventPage extends StatefulWidget {
@@ -52,7 +50,7 @@ class _HostEventPageState extends State<HostEventPage> {
               ),
             ),
             Text(
-              "address：${widget.location.address}",
+              "address：${widget.location.fullAddress}",
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const Padding(
@@ -122,7 +120,7 @@ class _HostEventPageState extends State<HostEventPage> {
                   },
                   child: Text(
                     widget.dateText,
-                    style: TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                   ),
                 ),
                 ElevatedButton(
@@ -137,7 +135,7 @@ class _HostEventPageState extends State<HostEventPage> {
                   },
                   child: Text(
                     widget.timeText,
-                    style: TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                   ),
                 ),
               ],
@@ -152,7 +150,7 @@ class _HostEventPageState extends State<HostEventPage> {
                       [
                         widget.location.name,
                         nameController.text,
-                        widget.location.address,
+                        widget.location.fullAddress,
                         phoneController.text,
                         widget.date,
                         widget.time,
