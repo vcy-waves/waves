@@ -1,34 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:test_field/event.dart';
-import 'package:test_field/location.dart';
+import 'model/event.dart';
+import 'model/location.dart';
 
 List<BeachCleanUpEvent> events = [
   BeachCleanUpEvent(
-    id: 1,
-    picture: "testimage.png",
     organizer: "Eason",
-    location: "Xinyi",
-    address: "xinyi district",
+    location: locations[0],
     date: DateTime.utc(2024, 4, 25),
     time: const TimeOfDay(hour: 15, minute: 30),
     participants: 1,
   ),
   BeachCleanUpEvent(
-    id: 2,
-    picture: "testimage.png",
     organizer: "Aiby",
-    location: "Datong",
-    address: "ZongZeng district",
+    location: locations[0],
     date: DateTime.utc(2024, 7, 25),
     time: const TimeOfDay(hour: 16, minute: 30),
     participants: 3,
   ),
   BeachCleanUpEvent(
-    id: 3,
-    picture: "testimage.png",
-    organizer: "Eason",
-    location: "Xinyi",
-    address: "ZongZeng district",
+    organizer: "Janice",
+    location: locations[1],
     date: DateTime.utc(2024, 6, 25),
     time: const TimeOfDay(hour: 14, minute: 40),
     participants: 5,
@@ -37,26 +28,33 @@ List<BeachCleanUpEvent> events = [
 
 List<Location> locations = [
   Location(
-    id: 1,
-    picture: "testimage.png",
-    address: "xinyi district",
-    name: 'fu Beach',
-    rate: 2.7,
-  ),
+      name: '沙崙海灘',
+      city: '新北市',
+      district: '淡水區',
+      fullAddress: '新北市淡水區沙崙路',
+      street: '沙崙路',
+      streetNumber: '',
+      village: '',
+      picture: 'testImage.png',
+      rate: 4.7),
   Location(
-    id: 2,
-    picture: "testimage.png",
-    address: "Daan district",
-    name: 'gwen Beach',
-    rate: 2.7,
-  ),
+      name: '老梅沙灘',
+      city: '新北市',
+      district: '石門區',
+      fullAddress: '新北市石門區楓林路',
+      street: '',
+      streetNumber: '',
+      village: '',
+      picture: 'testImage.png',
+      rate: 4.4),
   Location(
-    id: 3,
-    picture: "testimage.png",
-    address: "ZongZeng district",
-    name: 'long Beach',
-    rate: 3.3,
-  ),
+      name: '洲子灣',
+      city: '新北市',
+      district: '淡水區',
+      fullAddress: '新北市淡水區',
+      street: '',
+      streetNumber: '',
+      village: '',
+      picture: 'testImage.png',
+      rate: 4.0),
 ];
-
-// List<Card> eventList = <Card>[];

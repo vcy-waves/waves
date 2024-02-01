@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:waves/model/event.dart';
 import 'package:waves/model/location.dart';
 import 'host_event_page.dart';
 import '../test_list.dart';
-import 'package:flutter/gestures.dart';
 import 'rating_star.dart';
 
 class ChooseLocationPage extends StatefulWidget {
@@ -51,7 +49,7 @@ class _JointEventPageState extends State<ChooseLocationPage> {
                     ],
                   ),
                   subtitle: Text(
-                    item.address,
+                    item.fullAddress,
                     style: const TextStyle(fontSize: 15),
                   ),
                 ),

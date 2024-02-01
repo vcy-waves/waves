@@ -36,13 +36,14 @@ class _JointEventPageState extends State<JointEventPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                    leading: Image.asset("assets/images/${item.picture}"),
+                    leading:
+                        Image.asset("assets/images/${item.location.picture}"),
                     title: Text(
-                      item.location,
+                      item.location.name,
                       style: const TextStyle(fontSize: 20),
                     ),
                     subtitle: Text(
-                      "${item.address}\norganizer：${item.organizer}",
+                      "${item.location.fullAddress}\norganizer：${item.organizer}",
                       style: const TextStyle(fontSize: 15),
                     ),
                     trailing: Column(
@@ -110,7 +111,7 @@ class _JointEventPageState extends State<JointEventPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ChooseLocationPage(),
+              builder: (context) => const ChooseLocationPage(),
             ),
           );
         },
