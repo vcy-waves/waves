@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "329107171152",
+    "project_id": "waves-a93a1",
+    "storage_bucket": "waves-a93a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329107171152:android:bd1910e0a28a15b2d0ee55",
+        "android_client_info": {
+          "package_name": "com.example.waves"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaGvevGSBiXhbRa8TMr2EQW9PA4cYkbiM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
