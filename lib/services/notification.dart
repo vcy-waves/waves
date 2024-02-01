@@ -2,6 +2,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:waves/constants.dart';
 
 class NotificationService {
+  static promoteEvent({required notiType, required location, required initiator}) {
+    if(notiType == NotiType.normal) {
+      final NotiModel noti = NotiModel(title: 'Waves', body: 'We need you to tidy up this ocean with us now !', location: location, organizer: initiator, time: time)
+    }
+  }
   static Map<NotiType, NotiModel> notiTemplate = {
     NotiType.normal: NotiModel(
       title: 'Waves',

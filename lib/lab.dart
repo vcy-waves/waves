@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'services/notification.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -5,7 +7,6 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'constants.dart';
 import 'services/location.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/services.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,19 +66,25 @@ class _LabState extends State<Lab> {
                 child: const Text('sending email'),
               ),
               TextButton(
-                onPressed: () async{
+                onPressed: () async {
                   final location = await LocatingService.determinePosition();
                   print(location.latitude);
                   print(location.longitude);
+                  // https://maps.googleapis.com/maps/api/geocode/json?latlng=25.0542428,121.4613026&language=zh-TW&key=AIzaSyDraVDjDdbDUXfQlxU6oL396YUx_noYhrs
                   Uri uri = Uri(
                     scheme: 'https',
-                    host: 'api.opencube.tw',
-                    path: '/location',
-                    queryParameters: {'lat': location.latitude.toString(), 'lng': location.longitude.toString(), 'key': 'AIzaSyDraVDjDdbDUXfQlxU6oL396YUx_noYhrs'}
+                    host: 'maps.googleapis.com',
+                    path: '/maps/api/geocode/json',
+                    queryParameters: {
+                      'latlng': '25.0542428,121.4613026',
+                      'language': 'zh-TW',
+                      'key': 'AIzaSyDraVDjDdbDUXfQlxU6oL396YUx_noYhrs'
+                    },
                   );
                   final response = await http.get(uri);
-                  final data = response.body;
-                  print(data.toString());
+                  var data = jsonDecode(response.body);
+                  data = data['results'][1];
+
                 },
                 child: const Text('locate'),
               ),
