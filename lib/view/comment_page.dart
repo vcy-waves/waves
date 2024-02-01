@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:waves/view/rating_bar.dart';
+import 'rating_bar.dart';
 
 class CommentPage extends StatefulWidget {
   const CommentPage({super.key});
@@ -48,18 +48,18 @@ class _CommentPageState extends State<CommentPage> {
                   ),
                   TextField(
                     controller: commentController,
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.white,
                         fontSize: 30,
                         fontWeight: FontWeight.bold),
                     keyboardType: TextInputType.multiline,
                     maxLines: 5,
                     // minLines: 1,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Leave your comment',
                       hintStyle: TextStyle(fontSize: 20, color: Colors.white60),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(width: 1, color: Colors.white),
                       ),
@@ -87,8 +87,8 @@ class _CommentPageState extends State<CommentPage> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pop(
-                            context, [rating, commentController.text]);
+                        Navigator.pop(context,
+                            [rating, commentController.text, DateTime.now()]);
                       },
                       child: const Text(
                         "post",
