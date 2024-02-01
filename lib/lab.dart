@@ -4,8 +4,13 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'constants.dart';
 import 'services/location.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart';
 
-void main() => runApp(const Lab());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const Lab());
+}
 
 class Lab extends StatefulWidget {
   const Lab({super.key});
@@ -64,6 +69,15 @@ class _LabState extends State<Lab> {
                   final location = await LocatingService.determinePosition();
                   print(location.latitude);
                   print(location.longitude);
+                  Uri uri = Uri(
+                    scheme: 'https',
+                    host: 'api.opencube.tw',
+                    path: '/location',
+                    queryParameters: {'lat': location.latitude.toString(), 'lng': location.longitude.toString(), 'key': 'AIzaSyDraVDjDdbDUXfQlxU6oL396YUx_noYhrs'}
+                  );
+                  final response = await http.get(uri);
+                  final data = response.body;
+                  print(data.toString());
                 },
                 child: const Text('locate'),
               ),
