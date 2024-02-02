@@ -26,7 +26,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -128,24 +128,36 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       ),
                     ],
                   ),
-                  TextButton(
-                    onPressed: () async {
-                      try {
-                        final user = _auth.createUserWithEmailAndPassword(
-                            email: email, password: password);
-                        final data = _firestore.collection('users').add({
-                          'name': name,
-                          'email': email,
-                          'location': location,
-                          'broadcasting': isChecked,
-                        });
-                        Navigator.push(context, MaterialPageRoute(builder:(context)=>HomePage()));
-                      } catch (e) {
-                        print(e);
-                      }
-                    },
-                    child: Text('login'),
-                  )
+                  Material(
+                    color: Color(0xFF86B6F6),
+                    borderRadius: BorderRadius.circular(50),
+                    shadowColor: Colors.blue.shade500,
+                    elevation: 3,
+                    child: MaterialButton(
+                      minWidth: MediaQuery.of(context).size.width*1,
+                      height: 55,
+                      onPressed: (){
+                        try {
+                          final user = _auth.createUserWithEmailAndPassword(
+                              email: email, password: password);
+                          final data = _firestore.collection('users').add({
+                            'name': name,
+                            'email': email,
+                            'location': location,
+                            'broadcasting': isChecked,
+                          });
+                          Navigator.push(context, MaterialPageRoute(builder:(context)=>HomePage()));
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
+                      child: Text(
+                        'registration',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+
                 ],
               ),
             ),
