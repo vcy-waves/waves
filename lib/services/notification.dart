@@ -110,7 +110,6 @@ class NotificationService {
       notiModel.title,
       notiModel.body,
       notificationDetails,
-      payload: notiModel.location,
     );
   }
 }
@@ -119,7 +118,6 @@ class NotiModel {
   String title;
   String body;
   String organizer;
-  // DateTime time;
   String location;
 
   NotiModel({
@@ -127,6 +125,6 @@ class NotiModel {
     required this.body,
     required this.location,
     required this.organizer,
-    // required this.time,
+    required this.time,
   });
 }
