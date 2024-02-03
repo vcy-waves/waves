@@ -19,7 +19,7 @@ class NotificationService {
 
   static void getNotificationOnFirebase(flutterLocalNotificationsPlugin) async {
     await for (var snapshot
-        in _firestore.collection('notificationChannel').snapshots()) {
+    in _firestore.collection('notificationChannel').snapshots()) {
       for (var noti in snapshot.docs) {
         if (noti['initiator'] == 'Chi-Yu') {
           final notiModel = NotiModel(
@@ -81,10 +81,10 @@ class NotificationService {
   static Future initial(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
     AndroidInitializationSettings android =
-        const AndroidInitializationSettings('mipmap/ic_launcher');
+    const AndroidInitializationSettings('mipmap/ic_launcher');
     DarwinInitializationSettings ios = const DarwinInitializationSettings();
     final initializationSettings =
-        InitializationSettings(iOS: ios, android: android);
+    InitializationSettings(iOS: ios, android: android);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
@@ -110,6 +110,7 @@ class NotificationService {
       notiModel.title,
       notiModel.body,
       notificationDetails,
+      payload: notiModel.location,
     );
   }
 }
@@ -118,6 +119,7 @@ class NotiModel {
   String title;
   String body;
   String organizer;
+  // DateTime time;
   String location;
 
   NotiModel({
@@ -125,6 +127,6 @@ class NotiModel {
     required this.body,
     required this.location,
     required this.organizer,
-    required this.time,
+    // required this.time,
   });
 }
