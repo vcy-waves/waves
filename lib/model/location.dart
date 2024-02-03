@@ -8,7 +8,6 @@ class Location {
   String streetNumber;
   String fullAddress;
   double rate;
-
   Location({
     required this.name,
     required this.city,

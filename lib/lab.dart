@@ -1,6 +1,8 @@
 import 'dart:convert';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:waves/firebase_options.dart';
+import 'package:waves/view/home_page.dart';
 import 'services/notification.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -8,9 +10,15 @@ import 'constants.dart';
 import 'services/location.dart';
 import 'package:http/http.dart' as http;
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const Lab());
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(
+    MaterialApp(
+      home: HomePage(),
+      // home: Lab(),
+    ),
+  );
 }
 
 class Lab extends StatefulWidget {
@@ -27,6 +35,8 @@ class _LabState extends State<Lab> {
   void initState() {
     super.initState();
     NotificationService.initial(flutterLocalNotificationsPlugin);
+    NotificationService.getNotificationOnFirebase(
+        flutterLocalNotificationsPlugin);
   }
 
   @override
@@ -40,9 +50,10 @@ class _LabState extends State<Lab> {
               TextButton(
                 child: const Text('notification'),
                 onPressed: () async {
-                  await NotificationService.showNotification(
-                    notiModel:
-                        NotificationService.notiTemplate[NotiType.immediate]!,
+                  await NotificationService.promoteEvent(
+                    notiType: NotiType.fine,
+                    location: 'New Taipei City',
+                    initiator: 'Chi-Yu',
                     flutterLocalNotificationsPlugin:
                         flutterLocalNotificationsPlugin,
                   );
@@ -84,7 +95,6 @@ class _LabState extends State<Lab> {
                   final response = await http.get(uri);
                   var data = jsonDecode(response.body);
                   data = data['results'][1];
-
                 },
                 child: const Text('locate'),
               ),

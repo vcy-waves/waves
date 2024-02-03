@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:waves/view/home_page.dart';
+import 'package:waves/view/registration_page.dart';
+import 'package:flutter/scheduler.dart';
 
 class LoginPage extends StatefulWidget {
-  static String id = 'login_page';
-
   const LoginPage({super.key});
 
   @override
@@ -14,66 +15,115 @@ class _LoginPageState extends State<LoginPage> {
   final _auth = FirebaseAuth.instance;
   String email = '';
   String password = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      User? user = _auth.currentUser;
+      // if (user != null) {
+      //   Navigator.push(
+      //       context, MaterialPageRoute(builder: (context) => HomePage()));
+      // }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextField(
-                  onChanged: (value) {
-                    email = value;
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                    hintText: 'enter your email',
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                TextField(
-                  onChanged: (value) {
-                    password = value;
-                  },
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                    hintText: 'enter your password',
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: ()async{
-                    try{
-                      final user = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-                      print(user.credential!.accessToken);
-                    }catch(e){
-                      print(e);
-                    }
-                  },
-                  child: Text('login'),
-                )
-              ],
+          Image.asset(
+            'images/ocean/cover_6.JPG',
+            opacity: const AlwaysStoppedAnimation(.5),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            fit: BoxFit.cover,
+          ),
+          Column(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextField(
+                        onChanged: (value) {
+                          email = value;
+                        },
+                        keyboardType: TextInputType.emailAddress,
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          hintText: 'enter your email',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
                         ),
-            ),),
-
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      TextField(
+                        onChanged: (value) {
+                          password = value;
+                        },
+                        obscureText: true,
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(left: 45),
+                          hintText: 'enter your password',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              Icons.arrow_circle_right_rounded,
+                              size: 35,
+                              color: Colors.black38,
+                            ),
+                            onPressed: () async {
+                              try {
+                                UserCredential user =
+                                    await _auth.signInWithEmailAndPassword(
+                                        email: email, password: password);
+                                // _auth.setPersistence(Persistence.LOCAL);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage()));
+                              } catch (e) {
+                                print(e);
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RegistrationPage()));
+                        },
+                        child: Text("Don't have any account?"),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

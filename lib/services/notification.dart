@@ -1,35 +1,67 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:waves/constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NotificationService {
-  static promoteEvent({required notiType, required location, required initiator}) {
-    if(notiType == NotiType.normal) {
-      final NotiModel noti = NotiModel(title: 'Waves', body: 'We need you to tidy up this ocean with us now !', location: location, organizer: initiator, time: time)
+  static final _firestore = FirebaseFirestore.instance;
+
+  static void getNotificationOnFirebase(flutterLocalNotificationsPlugin) async {
+    await for (var snapshot
+        in _firestore.collection('notification').snapshots()) {
+      for (var noti in snapshot.docs) {
+        if (noti['initiator'] == 'Chi-Yu') {
+          final notiModel = NotiModel(
+            title: noti['title'],
+            body: noti['body'],
+            location: noti['location'],
+            organizer: noti['initiator'],
+          );
+          await showNotification(
+            notiModel: notiModel,
+            flutterLocalNotificationsPlugin: flutterLocalNotificationsPlugin,
+          );
+        }
+      }
     }
   }
-  static Map<NotiType, NotiModel> notiTemplate = {
-    NotiType.normal: NotiModel(
-      title: 'Waves',
-      body: 'Ocean need\'s you !',
-      location: '六塊厝漁港',
-      organizer: 'Chi-Yu, Li',
-      time: DateTime.now(),
-    ),
-    NotiType.fine: NotiModel(
-      title: 'Waves',
-      body: 'Come to visit this gorgeous ocean ~',
-      location: '六塊厝漁港',
-      organizer: 'Chi-Yu, Li',
-      time: DateTime.now(),
-    ),
-    NotiType.immediate: NotiModel(
-      title: 'Waves',
-      body: 'Ocean need\'s you right now ! ! !',
-      location: '六塊厝漁港',
-      organizer: 'Chi-Yu, Li',
-      time: DateTime.now(),
-    ),
-  };
+
+  static promoteEvent({
+    required notiType,
+    required location,
+    required initiator,
+    required flutterLocalNotificationsPlugin,
+  }) {
+    final NotiModel noti;
+    if (notiType == NotiType.immediate) {
+      noti = NotiModel(
+        title: 'Waves',
+        body: 'We need you to tidy up this ocean with us now !',
+        location: location,
+        organizer: initiator,
+      );
+    } else if (notiType == NotiType.normal) {
+      noti = NotiModel(
+        title: 'Waves',
+        body: 'Normal',
+        location: location,
+        organizer: initiator,
+      );
+    } else {
+      noti = NotiModel(
+        title: 'Waves',
+        body: 'Come to visit this gorgeous ocean',
+        location: location,
+        organizer: initiator,
+      );
+    }
+    _firestore.collection('notification').doc('channel').set({
+      'title': noti.title,
+      'body': noti.body,
+      'initiator': noti.organizer,
+      'location': noti.location,
+    }).then((value) =>
+        _firestore.collection('notification').doc('channel').delete());
+  }
 
   static Future initial(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
@@ -63,6 +95,7 @@ class NotificationService {
       notiModel.title,
       notiModel.body,
       notificationDetails,
+      payload: notiModel.location,
     );
   }
 }
@@ -71,7 +104,6 @@ class NotiModel {
   String title;
   String body;
   String organizer;
-  DateTime time;
   String location;
 
   NotiModel({
@@ -79,6 +111,5 @@ class NotiModel {
     required this.body,
     required this.location,
     required this.organizer,
-    required this.time,
   });
 }
