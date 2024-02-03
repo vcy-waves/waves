@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           ToolBox(
                             color: Colors.blueGrey.shade300,
-                            title: 'Clean  Up',
+                            title: 'Clean\nUp',
                             icon: Icons.opacity,
                             iconColor: Colors.blueAccent.shade200,
                             onTap: () async {
