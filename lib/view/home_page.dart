@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:waves/components/tool_box.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../model/location.dart';
+import 'host_event_page.dart';
+import 'package:waves/constants.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,8 +22,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    NotificationService.initial(flutterLocalNotificationsPlugin);
     NotificationService.getNotificationOnFirebase(
-        flutterLocalNotificationsPlugin);
+      flutterLocalNotificationsPlugin,
+    );
   }
 
   @override
@@ -76,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Hi Chi-Yu',
+                              'Hi Yi-Tong',
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontFamily: 'Playpen_Sans',
@@ -84,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Text(
-                              'You have been clean up 3 times',
+                              'You have been clean up 5 times',
                               style: TextStyle(
                                 fontFamily: 'Playpen_Sans',
                                 fontSize: 18.0,
@@ -110,21 +115,16 @@ class _HomePageState extends State<HomePage> {
                           ),
                           ToolBox(
                             color: Colors.blueGrey.shade300,
-                            title: 'Hold Event',
+                            title: 'Hold\nEvent',
                             icon: Icons.library_books_rounded,
                             iconColor: Colors.amber.shade500,
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => const AlertDialog(
-                                  title: Text('Hold Event ! ! !',
-                                    style: TextStyle(
-                                      fontFamily: 'Playpen_Sans',
-                                      fontSize: 25.0,
-                                    ),
-                                  ),
-
-                                ),
+                            onTap: () async {
+                              await NotificationService.promoteEvent(
+                                notiType: NotiType.fine,
+                                location: 'New Taipei City',
+                                initiator: 'Chi-Yu',
+                                flutterLocalNotificationsPlugin:
+                                    flutterLocalNotificationsPlugin,
                               );
                             },
                           ),
@@ -134,17 +134,35 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           ToolBox(
                             color: Colors.blueGrey.shade300,
-                            title: 'Waves Rank',
+                            title: 'Waves\nRank',
                             icon: Icons.star_outline_rounded,
                             iconColor: Colors.deepOrangeAccent.shade200,
                             onTap: () {},
                           ),
                           ToolBox(
                             color: Colors.blueGrey.shade300,
-                            title: 'Needs Help',
+                            title: 'Needs\nHelp',
                             icon: Icons.help_rounded,
                             iconColor: Colors.green.shade300,
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => HostEventPage(
+                                    location: Location(
+                                      name: 'name',
+                                      city: 'city',
+                                      district: 'district',
+                                      fullAddress: 'fullAddress',
+                                      street: 'street',
+                                      streetNumber: 'streetNumber',
+                                      village: 'village',
+                                      picture: 'picture',
+                                      rate: 3,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
