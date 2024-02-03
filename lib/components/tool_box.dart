@@ -25,7 +25,7 @@ class ToolBox extends StatelessWidget {
           decoration: BoxDecoration(
               color: color.withOpacity(0.1),
               borderRadius: const BorderRadius.all(Radius.circular(10))),
-          margin: const EdgeInsets.only(top: 15, left: 20, right: 20, bottom: 10),
+          margin: const EdgeInsets.only(top: 10, left: 8, right: 8, bottom: 10),
           child: ListTile(
             leading: Icon(
               icon,

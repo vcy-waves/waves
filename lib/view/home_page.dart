@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           ToolBox(
                             color: Colors.blueGrey.shade300,
-                            title: 'Clean Up',
+                            title: 'Clean  Up',
                             icon: Icons.opacity,
                             iconColor: Colors.blueAccent.shade200,
                             onTap: () async {
@@ -113,7 +113,20 @@ class _HomePageState extends State<HomePage> {
                             title: 'Hold Event',
                             icon: Icons.library_books_rounded,
                             iconColor: Colors.amber.shade500,
-                            onTap: () {},
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => const AlertDialog(
+                                  title: Text('Hold Event ! ! !',
+                                    style: TextStyle(
+                                      fontFamily: 'Playpen_Sans',
+                                      fontSize: 25.0,
+                                    ),
+                                  ),
+
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
