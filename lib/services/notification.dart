@@ -5,21 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class NotificationService {
   static final _firestore = FirebaseFirestore.instance;
 
-  // static getUserDetail({required userID}) async {
-  //   _firestore.collection("users").get().then(
-  //     (querySnapshot) {
-  //       print("Successfully completed");
-  //       for (var docSnapshot in querySnapshot.docs) {
-  //         print('${docSnapshot.id} => ${docSnapshot.data()}');
-  //       }
-  //     },
-  //     onError: (e) => print("Error completing: $e"),
-  //   );
-  // }
-
   static void getNotificationOnFirebase(flutterLocalNotificationsPlugin) async {
     await for (var snapshot
-    in _firestore.collection('notificationChannel').snapshots()) {
+        in _firestore.collection('notification').snapshots()) {
       for (var noti in snapshot.docs) {
         if (noti['initiator'] == 'Chi-Yu') {
           final notiModel = NotiModel(
@@ -27,11 +15,11 @@ class NotificationService {
             body: noti['body'],
             location: noti['location'],
             organizer: noti['initiator'],
-            // time: noti['time'],
           );
-          _showNotification(
-              notiModel: notiModel,
-              flutterLocalNotificationsPlugin: flutterLocalNotificationsPlugin);
+          await showNotification(
+            notiModel: notiModel,
+            flutterLocalNotificationsPlugin: flutterLocalNotificationsPlugin,
+          );
         }
       }
     }
@@ -50,7 +38,6 @@ class NotificationService {
         body: 'We need you to tidy up this ocean with us now !',
         location: location,
         organizer: initiator,
-        // time: DateTime.now(),
       );
     } else if (notiType == NotiType.normal) {
       noti = NotiModel(
@@ -58,7 +45,6 @@ class NotificationService {
         body: 'Normal',
         location: location,
         organizer: initiator,
-        // time: DateTime.now(),
       );
     } else {
       noti = NotiModel(
@@ -66,29 +52,28 @@ class NotificationService {
         body: 'Come to visit this gorgeous ocean',
         location: location,
         organizer: initiator,
-        // time: DateTime.now(),
       );
     }
-    _firestore.collection('notificationChannel').add(<String, dynamic>{
+    _firestore.collection('notification').doc('channel').set({
       'title': noti.title,
       'body': noti.body,
       'initiator': noti.organizer,
-      // 'time': noti.time.toString(),
       'location': noti.location,
-    });
+    }).then((value) =>
+        _firestore.collection('notification').doc('channel').delete());
   }
 
   static Future initial(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
     AndroidInitializationSettings android =
-    const AndroidInitializationSettings('mipmap/ic_launcher');
+        const AndroidInitializationSettings('mipmap/ic_launcher');
     DarwinInitializationSettings ios = const DarwinInitializationSettings();
     final initializationSettings =
-    InitializationSettings(iOS: ios, android: android);
+        InitializationSettings(iOS: ios, android: android);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  static Future<void> _showNotification({
+  static Future<void> showNotification({
     var id = 0,
     required NotiModel notiModel,
     var payload,
@@ -119,7 +104,6 @@ class NotiModel {
   String title;
   String body;
   String organizer;
-  // DateTime time;
   String location;
 
   NotiModel({
@@ -127,6 +111,5 @@ class NotiModel {
     required this.body,
     required this.location,
     required this.organizer,
-    // required this.time,
   });
 }
