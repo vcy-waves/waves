@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:waves/view/home_page.dart';
 import 'package:waves/view/registration_page.dart';
+import 'package:flutter/scheduler.dart';
 
 class LoginPage extends StatefulWidget {
-  static String id = 'login_page';
-
-  const LoginPage({super.key});
-
+   const LoginPage({super.key});
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -17,6 +15,18 @@ class _LoginPageState extends State<LoginPage> {
   String email = '';
   String password = '';
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      User? user = _auth.currentUser;
+      if(user!= null){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+      }
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,9 +86,9 @@ class _LoginPageState extends State<LoginPage> {
                       height: 55,
                       onPressed: () async {
                         try {
-                          await _auth.signInWithEmailAndPassword(
+                          UserCredential user = await _auth.signInWithEmailAndPassword(
                               email: email, password: password);
-                          _auth.setPersistence(Persistence.LOCAL);
+                          // _auth.setPersistence(Persistence.LOCAL);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
