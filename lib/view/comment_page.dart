@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'rating_bar.dart';
 
 class CommentPage extends StatefulWidget {
@@ -56,7 +57,7 @@ class _CommentPageState extends State<CommentPage> {
                     maxLines: 5,
                     // minLines: 1,
                     decoration: const InputDecoration(
-                      hintText: 'Leave your comment',
+                      hintText: 'share your thought(less than 250 words)',
                       hintStyle: TextStyle(fontSize: 20, color: Colors.white60),
                       contentPadding:
                           EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -64,6 +65,7 @@ class _CommentPageState extends State<CommentPage> {
                         borderSide: BorderSide(width: 1, color: Colors.white),
                       ),
                     ),
+                    inputFormatters: [LengthLimitingTextInputFormatter(250)],
                   ),
                 ],
               ),
