@@ -2,6 +2,7 @@ import 'package:waves/services/notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:waves/components/tool_box.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -96,17 +97,36 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           ToolBox(
                             color: Colors.blueGrey.shade300,
-                            title: 'Clean Up',
+                            title: 'Clean  Up',
                             icon: Icons.opacity,
                             iconColor: Colors.blueAccent.shade200,
-                            onTap: () {},
+                            onTap: () async {
+                              final url = Uri.parse(
+                                  'https://www.google.com/maps/d/u/2/viewer?hl=zh-TW&ll=25.094785818256703,121.64989287560199&z=11&mid=1Gj56g49POVjUbeBmG_Pi_caT-r_7nuOX');
+                              if (!await launchUrl(url)) {
+                                throw Exception('Could not launch $url');
+                              }
+                            },
                           ),
                           ToolBox(
                             color: Colors.blueGrey.shade300,
                             title: 'Hold Event',
                             icon: Icons.library_books_rounded,
                             iconColor: Colors.amber.shade500,
-                            onTap: () {},
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => const AlertDialog(
+                                  title: Text('Hold Event ! ! !',
+                                    style: TextStyle(
+                                      fontFamily: 'Playpen_Sans',
+                                      fontSize: 25.0,
+                                    ),
+                                  ),
+
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
