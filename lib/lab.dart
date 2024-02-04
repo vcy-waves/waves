@@ -12,9 +12,12 @@ import 'package:http/http.dart' as http;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: HomePage(),
       // home: Lab(),
     ),
@@ -34,9 +37,9 @@ class _LabState extends State<Lab> {
   @override
   void initState() {
     super.initState();
-    NotificationService.initial(flutterLocalNotificationsPlugin);
-    NotificationService.getNotificationOnFirebase(
-        flutterLocalNotificationsPlugin);
+    // NotificationService.initial(flutterLocalNotificationsPlugin);
+    // NotificationService.getNotificationOnFirebase(
+    //     flutterLocalNotificationsPlugin);
   }
 
   @override

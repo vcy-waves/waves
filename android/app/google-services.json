@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:329107171152:android:bd1910e0a28a15b2d0ee55",
+        "mobilesdk_app_id": "1:329107171152:android:cbf248d97d2a0dc2d0ee55",
         "android_client_info": {
-          "package_name": "com.example.waves"
+          "package_name": "com.ntue.waves"
         }
       },
       "oauth_client": [],

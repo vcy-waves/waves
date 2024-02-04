@@ -23,8 +23,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()!.requestNotificationsPermission();
+    // flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+    //     AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
     NotificationService.initial(flutterLocalNotificationsPlugin);
     NotificationService.getNotificationOnFirebase(
       flutterLocalNotificationsPlugin,

@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDaGvevGSBiXhbRa8TMr2EQW9PA4cYkbiM',
-    appId: '1:329107171152:android:bd1910e0a28a15b2d0ee55',
+    appId: '1:329107171152:android:cbf248d97d2a0dc2d0ee55',
     messagingSenderId: '329107171152',
     projectId: 'waves-a93a1',
     storageBucket: 'waves-a93a1.appspot.com',
@@ -59,10 +59,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCaoBHeuLq1lpLQf0CRT7G7sSLX7SqjdF8',
-    appId: '1:329107171152:ios:b51db42dfe0c99e0d0ee55',
+    appId: '1:329107171152:ios:2a0f6e62046aa3b9d0ee55',
     messagingSenderId: '329107171152',
     projectId: 'waves-a93a1',
     storageBucket: 'waves-a93a1.appspot.com',
-    iosBundleId: 'com.example.waves',
+    iosBundleId: 'com.ntue.waves',
   );
 }
