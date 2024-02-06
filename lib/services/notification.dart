@@ -13,8 +13,9 @@ class NotificationService {
           final notiModel = NotiModel(
             title: noti['title'],
             body: noti['body'],
-            location: noti['location'],
             organizer: noti['initiator'],
+            lon: noti['lon'],
+            lat: noti['lat'],
           );
           await showNotification(
             notiModel: notiModel,
@@ -36,21 +37,24 @@ class NotificationService {
       noti = NotiModel(
         title: 'Waves',
         body: 'We need you to tidy up this ocean with us now !',
-        location: location,
+        lat: 0,
+        lon: 0,
         organizer: initiator,
       );
     } else if (notiType == NotiType.normal) {
       noti = NotiModel(
         title: 'Waves',
         body: 'Normal',
-        location: location,
+        lat: 0,
+        lon: 0,
         organizer: initiator,
       );
     } else {
       noti = NotiModel(
         title: 'Waves',
         body: 'Come to visit this gorgeous ocean',
-        location: location,
+        lat: 0,
+        lon: 0,
         organizer: initiator,
       );
     }
@@ -58,7 +62,8 @@ class NotificationService {
       'title': noti.title,
       'body': noti.body,
       'initiator': noti.organizer,
-      'location': noti.location,
+      'lat': noti.lat,
+      'lon': noti.lon,
     }).then((value) =>
         _firestore.collection('notification').doc('channel').delete());
   }
@@ -95,7 +100,6 @@ class NotificationService {
       notiModel.title,
       notiModel.body,
       notificationDetails,
-      payload: notiModel.location,
     );
   }
 }
@@ -104,12 +108,14 @@ class NotiModel {
   String title;
   String body;
   String organizer;
-  String location;
+  double lat;
+  double lon;
 
   NotiModel({
     required this.title,
     required this.body,
-    required this.location,
     required this.organizer,
+    required this.lat,
+    required this.lon,
   });
 }
