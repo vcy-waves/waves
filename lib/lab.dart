@@ -16,10 +16,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    MaterialApp(
+    const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
-      // home: Lab(),
     ),
   );
 }
