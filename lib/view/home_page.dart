@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../model/location.dart';
 import 'host_event_page.dart';
 import 'package:waves/constants.dart';
+import 'dart:io' show Platform;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,16 +16,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? location;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
 
   @override
   void initState() {
     super.initState();
-    flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()!.requestNotificationsPermission();
+    // if (Platform.isAndroid) {
+    //   flutterLocalNotificationsPlugin
+    //       .resolvePlatformSpecificImplementation<
+    //           AndroidFlutterLocalNotificationsPlugin>()
+    //       ?.requestNotificationsPermission();
+    // }
     NotificationService.initial(flutterLocalNotificationsPlugin);
     NotificationService.getNotificationOnFirebase(
       flutterLocalNotificationsPlugin,
@@ -40,8 +43,8 @@ class _HomePageState extends State<HomePage> {
             'images/ocean/cover_1.jpg',
             opacity: const AlwaysStoppedAnimation(.5),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
+          const Padding(
+            padding: EdgeInsets.only(
               top: 50.0,
               left: 20,
               right: 20.0,
@@ -50,9 +53,8 @@ class _HomePageState extends State<HomePage> {
             child: Align(
               alignment: Alignment.topCenter,
               child: Text(
-                location ?? 'There is where you are',
-                style:
-                    const TextStyle(fontFamily: 'Playpen_Sans', fontSize: 20.0),
+                'There is where you are',
+                style: TextStyle(fontFamily: 'Playpen_Sans', fontSize: 20.0),
               ),
             ),
           ),
@@ -169,8 +171,9 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 30,),
-
+                      const SizedBox(
+                        height: 30,
+                      ),
                     ],
                   ),
                 ),

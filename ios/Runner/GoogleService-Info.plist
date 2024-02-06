@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.waves</string>
+	<string>com.ntue.waves</string>
 	<key>PROJECT_ID</key>
 	<string>waves-a93a1</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:329107171152:ios:b51db42dfe0c99e0d0ee55</string>
+	<string>1:329107171152:ios:2a0f6e62046aa3b9d0ee55</string>
 </dict>
 </plist>
