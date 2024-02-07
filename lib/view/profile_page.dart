@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -10,15 +11,19 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   Image photo = Image.asset('images/ocean/cover_7.JPG');
-  final _auth = FirebaseAuth.instance;
-
+  final _firestore = FirebaseFirestore.instance;
+  final _auth =FirebaseAuth.instance;
+  String name = '';
+  String email = '';
+  String address = '';
+  String personalRecord = '';
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    final email = _auth.currentUser;
 
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
