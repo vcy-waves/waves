@@ -7,6 +7,8 @@ import '../model/location.dart';
 import 'host_event_page.dart';
 import 'package:waves/constants.dart';
 import 'dart:io' show Platform;
+import 'package:waves/services/location.dart';
+import 'package:geolocator/geolocator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,12 +24,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // if (Platform.isAndroid) {
-    //   flutterLocalNotificationsPlugin
-    //       .resolvePlatformSpecificImplementation<
-    //           AndroidFlutterLocalNotificationsPlugin>()
-    //       ?.requestNotificationsPermission();
-    // }
+    if (Platform.isAndroid) {
+      flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.requestNotificationsPermission();
+    }
     NotificationService.initial(flutterLocalNotificationsPlugin);
     NotificationService.getNotificationOnFirebase(
       flutterLocalNotificationsPlugin,
@@ -126,7 +128,6 @@ class _HomePageState extends State<HomePage> {
                             onTap: () async {
                               await NotificationService.promoteEvent(
                                 notiType: NotiType.fine,
-                                location: 'New Taipei City',
                                 initiator: 'Chi-Yu',
                                 flutterLocalNotificationsPlugin:
                                     flutterLocalNotificationsPlugin,
@@ -139,10 +140,13 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           ToolBox(
                             color: Colors.blueGrey.shade300,
-                            title: 'Waves\nRank',
-                            icon: Icons.star_outline_rounded,
+                            title: 'Search\nEvent',
+                            icon: Icons.search_rounded,
                             iconColor: Colors.deepOrangeAccent.shade200,
-                            onTap: () {},
+                            onTap: () async {
+                              await NotificationService.checkIfEventIsNearBy(
+                                  placeId: 'placeId');
+                            },
                           ),
                           ToolBox(
                             color: Colors.blueGrey.shade300,

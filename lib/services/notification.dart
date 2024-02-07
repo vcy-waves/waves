@@ -1,9 +1,16 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:waves/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:waves/services/location.dart';
+import 'package:geolocator/geolocator.dart';
 
 class NotificationService {
   static final _firestore = FirebaseFirestore.instance;
+
+  static Future<bool> checkIfEventIsNearBy({required placeId}) async {
+    await LocatingService.calculateDistance(destinationPlaceId: 'destinationPlaceId');
+    return false;
+  }
 
   static void getNotificationOnFirebase(flutterLocalNotificationsPlugin) async {
     await for (var snapshot
@@ -28,7 +35,6 @@ class NotificationService {
 
   static promoteEvent({
     required notiType,
-    required location,
     required initiator,
     required flutterLocalNotificationsPlugin,
   }) {
@@ -70,6 +76,7 @@ class NotificationService {
 
   static Future initial(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
+    Geolocator.requestPermission();
     AndroidInitializationSettings android =
         const AndroidInitializationSettings('mipmap/ic_launcher');
     DarwinInitializationSettings ios = const DarwinInitializationSettings();
