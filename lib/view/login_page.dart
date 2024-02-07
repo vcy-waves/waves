@@ -22,10 +22,10 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       User? user = _auth.currentUser;
-      // if (user != null) {
-      //   Navigator.push(
-      //       context, MaterialPageRoute(builder: (context) => HomePage()));
-      // }
+      if (user != null) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
+      }
     });
   }
 
@@ -56,6 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                         keyboardType: TextInputType.emailAddress,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(top: 20,bottom: 20),
                           hintText: 'enter your email',
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
@@ -75,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                         obscureText: true,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 45),
+                          contentPadding: EdgeInsets.only(left: 45,top: 20,bottom: 20),
                           hintText: 'enter your password',
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
@@ -116,7 +117,9 @@ class _LoginPageState extends State<LoginPage> {
                               MaterialPageRoute(
                                   builder: (context) => RegistrationPage()));
                         },
-                        child: Text("Don't have any account?"),
+                        child: Text("Don't have any account?",style: TextStyle(
+                          // backgroundColor:Colors.grey,
+                        ),),
                       ),
                     ],
                   ),

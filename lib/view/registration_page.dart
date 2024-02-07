@@ -145,11 +145,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         child: MaterialButton(
                           minWidth: MediaQuery.of(context).size.width * 1,
                           height: 55,
-                          onPressed: () {
+                          onPressed: () async{
                             try {
-                              final user = _auth.createUserWithEmailAndPassword(
+                              final user = await _auth.createUserWithEmailAndPassword(
                                   email: email, password: password);
-                              final data = _firestore.collection('users').add({
+                              final data = _firestore.collection('users').doc(email).set({
                                 'name': name,
                                 'email': email,
                                 'address': location,
