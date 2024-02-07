@@ -1,9 +1,16 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:waves/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:waves/services/location.dart';
+import 'package:geolocator/geolocator.dart';
 
 class NotificationService {
   static final _firestore = FirebaseFirestore.instance;
+
+  static Future<bool> checkIfEventIsNearBy({required placeId}) async {
+    await LocatingService.calculateDistance(destinationPlaceId: 'destinationPlaceId');
+    return false;
+  }
 
   static void getNotificationOnFirebase(flutterLocalNotificationsPlugin) async {
     await for (var snapshot
@@ -13,8 +20,9 @@ class NotificationService {
           final notiModel = NotiModel(
             title: noti['title'],
             body: noti['body'],
-            location: noti['location'],
             organizer: noti['initiator'],
+            lon: noti['lon'],
+            lat: noti['lat'],
           );
           await showNotification(
             notiModel: notiModel,
@@ -27,7 +35,6 @@ class NotificationService {
 
   static promoteEvent({
     required notiType,
-    required location,
     required initiator,
     required flutterLocalNotificationsPlugin,
   }) {
@@ -36,21 +43,24 @@ class NotificationService {
       noti = NotiModel(
         title: 'Waves',
         body: 'We need you to tidy up this ocean with us now !',
-        location: location,
+        lat: 0,
+        lon: 0,
         organizer: initiator,
       );
     } else if (notiType == NotiType.normal) {
       noti = NotiModel(
         title: 'Waves',
         body: 'Normal',
-        location: location,
+        lat: 0,
+        lon: 0,
         organizer: initiator,
       );
     } else {
       noti = NotiModel(
         title: 'Waves',
         body: 'Come to visit this gorgeous ocean',
-        location: location,
+        lat: 0,
+        lon: 0,
         organizer: initiator,
       );
     }
@@ -58,13 +68,15 @@ class NotificationService {
       'title': noti.title,
       'body': noti.body,
       'initiator': noti.organizer,
-      'location': noti.location,
+      'lat': noti.lat,
+      'lon': noti.lon,
     }).then((value) =>
         _firestore.collection('notification').doc('channel').delete());
   }
 
   static Future initial(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
+    Geolocator.requestPermission();
     AndroidInitializationSettings android =
         const AndroidInitializationSettings('mipmap/ic_launcher');
     DarwinInitializationSettings ios = const DarwinInitializationSettings();
@@ -95,7 +107,6 @@ class NotificationService {
       notiModel.title,
       notiModel.body,
       notificationDetails,
-      payload: notiModel.location,
     );
   }
 }
@@ -104,12 +115,14 @@ class NotiModel {
   String title;
   String body;
   String organizer;
-  String location;
+  double lat;
+  double lon;
 
   NotiModel({
     required this.title,
     required this.body,
-    required this.location,
     required this.organizer,
+    required this.lat,
+    required this.lon,
   });
 }
