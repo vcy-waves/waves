@@ -7,12 +7,15 @@ class LocatingService {
 
   static Future<String> _findUserActualPlaceId() async {
     final Position position = await _determinePosition();
+    print(position.longitude);
+    print(position.latitude);
     final Uri url = Uri.parse(
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.latitude},${position.longitude}&language=zh-TW &location_type=ROOFTOP&result_type=street_address&key=$apiKey');
     var source = await http.get(url);
     final data = jsonDecode(source.body);
     return data['results'][0]['place_id'];
   }
+
 
   static Future<void> calculateDistance({required destinationPlaceId}) async {
     final String originPlaceId = await _findUserActualPlaceId();
