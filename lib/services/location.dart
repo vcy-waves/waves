@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 class LocatingService {
   static const String apiKey = 'AIzaSyDraVDjDdbDUXfQlxU6oL396YUx_noYhrs';
+  String timeZone = '';
 
   static Future<String> _findUserActualPlaceId() async {
     final Position position = await _determinePosition();
