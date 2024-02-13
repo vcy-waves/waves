@@ -4,6 +4,11 @@ import 'package:http/http.dart' as http;
 
 class LocatingService {
   static const String apiKey = 'AIzaSyDraVDjDdbDUXfQlxU6oL396YUx_noYhrs';
+  String timeZone = '';
+  static Future<String> _findUserActualPlaceId() async {
+    final Position position = await _determinePosition();
+    print(position.longitude);
+    print(position.latitude);
 
   static Future<String> _findUserActualPlaceId() async {
     final Position position = await _determinePosition();
@@ -13,7 +18,6 @@ class LocatingService {
     final data = jsonDecode(source.body);
     return data['results'][0]['place_id'];
   }
-
   static Future<void> calculateDistance({required destinationPlaceId}) async {
     final String originPlaceId = await _findUserActualPlaceId();
     final Uri url = Uri.parse(

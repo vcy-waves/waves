@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:waves/services/users.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -21,7 +22,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    UserServices.getUser();
   }
 
   @override
@@ -37,54 +38,59 @@ class _ProfilePageState extends State<ProfilePage> {
             fit: BoxFit.cover,
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 20,top: 20,right: 20,),
+            padding: const EdgeInsets.only(left: 30,top: 45,right: 30,),
             child: Column(
               children: [
                 Expanded(
                   child: Column(
                     children: [
-                      Container(
-                        height: 110,
-                        width: 110,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff7c94b6),
-                          image: DecorationImage(
-                            image: photo.image,
-                            fit: BoxFit.cover,
+                      Expanded(
+                        flex:4,
+                        child: Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff7c94b6),
+                            image: DecorationImage(
+                              image: photo.image,
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: const BorderRadius.all( Radius.circular(50.0)),
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 4.0,
+                            ),
                           ),
-                          borderRadius: const BorderRadius.all( Radius.circular(50.0)),
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 4.0,
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            TextField(
-                              decoration: InputDecoration(
-                                hintText: '',
-                              ),
-                            ),
-                            TextField(
-
-                            ),
-                            TextField(
-
-                            ),
-                            TextField(
-
-                            ),
-                          ],
                         ),
                       ),
                       Expanded(
-                        flex: 3,
+                        flex: 1,
+                        child: SizedBox(
+                          height: 10,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 20,
                         child: Container(
                           decoration: const BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(30),
                               topRight: Radius.circular(30),
+                            ),
+                          ),
+                          child:Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 30,vertical: 50),
+                            child: Column(
+                              children: [
+                                TextField(),
+                                SizedBox(height: 20,),
+                                TextField(),
+                                SizedBox(height: 20,),
+                                TextField(),
+                                SizedBox(height: 20,),
+                                TextField(),
+                              ],
                             ),
                           ),
                         ),

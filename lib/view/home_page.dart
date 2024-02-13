@@ -7,6 +7,9 @@ import '../model/location.dart';
 import 'host_event_page.dart';
 import 'package:waves/constants.dart';
 import 'dart:io' show Platform;
+import 'package:waves/services/account.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:waves/view/host_event_page.dart';
 import 'package:waves/services/location.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -144,6 +147,10 @@ class _HomePageState extends State<HomePage> {
                             icon: Icons.search_rounded,
                             iconColor: Colors.deepOrangeAccent.shade200,
                             onTap: () async {
+                              // await AccountService.fetchAccount();
+                              FirebaseAuth.instance.signOut();
+                              // await NotificationService.checkIfEventIsNearBy(
+                              //     placeId: 'placeId');
                               await NotificationService.checkIfEventIsNearBy(
                                   placeId: 'placeId');
                             },
@@ -156,19 +163,7 @@ class _HomePageState extends State<HomePage> {
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => HostEventPage(
-                                    location: Location(
-                                      name: 'name',
-                                      city: 'city',
-                                      district: 'district',
-                                      fullAddress: 'fullAddress',
-                                      street: 'street',
-                                      streetNumber: 'streetNumber',
-                                      village: 'village',
-                                      picture: 'picture',
-                                      rate: 3,
-                                    ),
-                                  ),
+                                  builder: (context) => HostEventPage(),
                                 ),
                               );
                             },
