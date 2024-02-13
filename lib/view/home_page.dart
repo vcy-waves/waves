@@ -10,6 +10,8 @@ import 'dart:io' show Platform;
 import 'package:waves/services/account.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:waves/view/host_event_page.dart';
+import 'package:waves/services/location.dart';
+import 'package:geolocator/geolocator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -149,6 +151,8 @@ class _HomePageState extends State<HomePage> {
                               FirebaseAuth.instance.signOut();
                               // await NotificationService.checkIfEventIsNearBy(
                               //     placeId: 'placeId');
+                              await NotificationService.checkIfEventIsNearBy(
+                                  placeId: 'placeId');
                             },
                           ),
                           ToolBox(
