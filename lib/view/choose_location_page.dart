@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:waves/model/location.dart';
-import 'host_event_page.dart';
+import 'search_event_page.dart';
 import '../test_list.dart';
-import 'rating_star.dart';
+import '../components/rating_star.dart';
 
 class ChooseLocationPage extends StatefulWidget {
   const ChooseLocationPage({Key? key}) : super(key: key);
