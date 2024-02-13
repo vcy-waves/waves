@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'rating_bar.dart';
+import '../components/rating_bar.dart';
 
 class CommentPage extends StatefulWidget {
   const CommentPage({super.key});

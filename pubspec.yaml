@@ -30,6 +30,10 @@ dependencies:
   url_launcher: ^6.2.4
   rename: ^3.0.1
   circular_menu: ^2.0.1
+  gap: ^3.0.1
+  table_calendar: ^3.1.0
+  firebase_storage: ^11.6.5
+  image_picker: ^1.0.7
 
 dev_dependencies:
   flutter_test:
@@ -45,6 +49,7 @@ flutter:
   assets:
     - images/app_icon/
     - images/ocean/
+    - images/ocean/baishawan/
 
   fonts:
     - family: Playpen_Sans
