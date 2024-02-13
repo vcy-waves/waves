@@ -6,7 +6,13 @@ buildscript {
     }
 
     dependencies {
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.13'
+
+        // setup for notification
+        classpath 'com.android.tools.build:gradle:7.3.1'
     }
 }
 
