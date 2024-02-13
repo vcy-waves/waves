@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AccountService {
   static final _firebase = FirebaseFirestore.instance;
   static final _auth = FirebaseAuth.instance;
-  static Map<String, dynamic> account = {};
+  static Map<String, dynamic> _account = {};
+
+  static Map<String, dynamic> getAccount() => _account;
 
   static Future<void> fetchAccount() async {
     final String? email = _fetchEmail();
@@ -13,10 +15,7 @@ class AccountService {
     if (data!.isEmpty) {
       throw Exception('No such user');
     }
-    account = data;
-    print(account['name']);
-    print(account['address']);
-    print(account['broadcasting']);
+    _account = data;
   }
 
   static String? _fetchEmail() {
