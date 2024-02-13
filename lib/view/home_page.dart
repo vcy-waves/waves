@@ -7,6 +7,11 @@ import 'search_event_page.dart';
 import 'package:waves/constants.dart';
 import 'dart:io' show Platform;
 import 'package:waves/view/post_event_page.dart';
+import 'package:waves/services/account.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:waves/view/host_event_page.dart';
+import 'package:waves/services/location.dart';
+import 'package:geolocator/geolocator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,7 +22,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
@@ -25,7 +30,7 @@ class _HomePageState extends State<HomePage> {
     if (Platform.isAndroid) {
       flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin>()
           ?.requestNotificationsPermission();
     }
     NotificationService.initial(flutterLocalNotificationsPlugin);
@@ -144,11 +149,20 @@ class _HomePageState extends State<HomePage> {
                             icon: Icons.search_rounded,
                             iconColor: Colors.deepOrangeAccent.shade200,
                             onTap: () async {
+                              <<<<<<< HEAD
                               Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => HostEventPage(),
-                                ),
+                              MaterialPageRoute(
+                              builder: (context) => HostEventPage(),
+                              ),
                               );
+                              =======
+                              // await AccountService.fetchAccount();
+                              FirebaseAuth.instance.signOut();
+                              // await NotificationService.checkIfEventIsNearBy(
+                              //     placeId: 'placeId');
+                              await NotificationService.checkIfEventIsNearBy(
+                              placeId: 'placeId');
+                              >>>>>>> aa36ee7b5284a946bac4ce268c2763e7109f517c
                             },
                           ),
                           ToolBox(
