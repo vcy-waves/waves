@@ -4,7 +4,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:waves/components/tool_box.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'search_event_page.dart';
-import 'package:waves/constants.dart';
 import 'dart:io' show Platform;
 import 'package:waves/view/post_event_page.dart';
 
@@ -17,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
@@ -25,7 +24,7 @@ class _HomePageState extends State<HomePage> {
     if (Platform.isAndroid) {
       flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin>()
           ?.requestNotificationsPermission();
     }
     NotificationService.initial(flutterLocalNotificationsPlugin);

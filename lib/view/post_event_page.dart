@@ -90,7 +90,7 @@ class _PostEventPageState extends State<PostEventPage> {
           TextButton(
             onPressed: () async {
               XFile? image =
-                  await _picker.pickImage(source: ImageSource.camera);
+              await _picker.pickImage(source: ImageSource.camera);
             },
             child: const Text(
               'Upload Current Image',

@@ -16,9 +16,6 @@ class AccountService {
       throw Exception('No such user');
     }
     _account = data;
-    print(_account['name']);
-    print(_account['address']);
-    print(_account['broadcasting']);
   }
 
   static String? _fetchEmail() {
