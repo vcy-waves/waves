@@ -46,7 +46,7 @@ class _HostEventPageState extends State<HostEventPage> {
               child: Text(
                 widget.location.name,
                 style:
-                    const TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+                const TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
               ),
             ),
             Text(
@@ -76,7 +76,7 @@ class _HostEventPageState extends State<HostEventPage> {
                   hintText: 'name',
                   hintStyle: TextStyle(fontSize: 20, color: Colors.black),
                   contentPadding:
-                      EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(width: 1, color: Colors.black),
                   ),
@@ -97,7 +97,7 @@ class _HostEventPageState extends State<HostEventPage> {
                   hintText: 'phone number',
                   hintStyle: TextStyle(fontSize: 20, color: Colors.black),
                   contentPadding:
-                      EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(width: 1, color: Colors.black),
                   ),
@@ -115,7 +115,7 @@ class _HostEventPageState extends State<HostEventPage> {
                       lastDate: DateTime(2100, 12),
                     ))!;
                     widget.dateText =
-                        "${widget.date.year}/${widget.date.month}/${widget.date.day}";
+                    "${widget.date.year}/${widget.date.month}/${widget.date.day}";
                     setState(() {});
                   },
                   child: Text(
@@ -130,7 +130,7 @@ class _HostEventPageState extends State<HostEventPage> {
                       context: context,
                     ))!;
                     widget.timeText =
-                        "${widget.time.hour}:${widget.time.minute}";
+                    "${widget.time.hour}:${widget.time.minute}";
                     setState(() {});
                   },
                   child: Text(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:waves/view/home_page.dart';
+import 'package:waves/services/account.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -16,8 +17,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
   String name = '';
   String email = '';
   String password = '';
-  String location = '';
-  bool isChecked = false;
+  String address = '';
+  bool broadcasting = false;
+  int id = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    AccountService.fetchAccount();
+    id = AccountService.account['count'];
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +109,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       ),
                       TextField(
                         onChanged: (value) {
-                          location = value;
+                          address = value;
                         },
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
@@ -120,13 +130,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         children: [
                           Checkbox(
                             checkColor: Colors.white,
-                            value: isChecked,
+                            value: broadcasting,
                             hoverColor: Colors.grey,
                             focusColor: Colors.blue,
                             activeColor: Colors.blue,
                             onChanged: (bool? value) {
                               setState(() {});
-                              isChecked = value!;
+                              broadcasting = value!;
                             },
                           ),
                           Text(
@@ -152,8 +162,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               final data = _firestore.collection('users').doc(email).set({
                                 'name': name,
                                 'email': email,
-                                'address': location,
-                                'broadcasting': isChecked,
+                                'address': address,
+                                'broadcasting': broadcasting,
+                                'id':id+1,
                               });
                               Navigator.push(
                                   context,
