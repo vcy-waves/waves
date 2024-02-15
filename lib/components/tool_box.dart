@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:waves/constants.dart';
 
 class ToolBox extends StatelessWidget {
   const ToolBox({
@@ -31,7 +32,7 @@ class ToolBox extends StatelessWidget {
               icon,
               color: iconColor,
             ),
-            title: Text(title),
+            title: Text(title, style: kSmallTitleTextStyle.copyWith(fontSize: 13),),
             trailing: const Icon(Icons.navigate_next),
           ),
         ),
