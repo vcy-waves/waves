@@ -22,7 +22,7 @@ class _JointEventPageState extends State<ChooseLocationPage> {
               context,
               MaterialPageRoute(
                 builder: (context) => HostEventPage(
-                  location: item,
+                  // location: item,
                 ),
               ),
             );

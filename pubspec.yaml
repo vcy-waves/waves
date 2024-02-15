@@ -30,6 +30,7 @@ dependencies:
   url_launcher: ^6.2.4
   rename: ^3.0.1
   circular_menu: ^2.0.1
+  font_awesome_flutter: ^10.7.0
   gap: ^3.0.1
   table_calendar: ^3.1.0
   firebase_storage: ^11.6.5
