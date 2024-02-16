@@ -5,6 +5,8 @@ import 'package:waves/components/customer_search_delegate.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:waves/model/post.dart';
+import 'package:waves/services/post.dart';
 
 class PostEventPage extends StatefulWidget {
   const PostEventPage({super.key});
@@ -89,8 +91,17 @@ class _PostEventPageState extends State<PostEventPage> {
           ),
           TextButton(
             onPressed: () async {
-              XFile? image =
-              await _picker.pickImage(source: ImageSource.camera);
+              // XFile? image =
+              //     await _picker.pickImage(source: ImageSource.camera);
+              PostService.post(
+                post: Post(
+                  location: 'location',
+                  initiator: 'initiator',
+                  lastUpdate: _selectedDay,
+                  id: 1,
+                ),
+              );
+              PostService.showAllPosts();
             },
             child: const Text(
               'Upload Current Image',
