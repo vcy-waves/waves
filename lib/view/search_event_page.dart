@@ -12,21 +12,24 @@ class HostEventPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey.shade100,
-        title: const Text('Waves', style: kSmallTitleTextStyle,),
+        title: const Text(
+          'Waves',
+          style: kSmallTitleTextStyle,
+        ),
       ),
       body: ListView(
         children: [
-          Post(updateTime: updateTime),
-          Post(updateTime: updateTime),
-          Post(updateTime: updateTime)
+          PostWidget(updateTime: updateTime),
+          PostWidget(updateTime: updateTime),
+          PostWidget(updateTime: updateTime)
         ],
       ),
     );
   }
 }
 
-class Post extends StatelessWidget {
-  const Post({
+class PostWidget extends StatelessWidget {
+  const PostWidget({
     super.key,
     required this.updateTime,
   });
