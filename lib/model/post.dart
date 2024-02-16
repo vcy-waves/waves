@@ -15,3 +15,4 @@ class Post {
     required this.id,
   });
 }
+
