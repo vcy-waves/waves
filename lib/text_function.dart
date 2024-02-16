@@ -22,6 +22,7 @@ class Test extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: ProfilePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

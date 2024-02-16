@@ -47,5 +47,16 @@
 	<true/>
 	<key>FLTEnableImpeller</key>
     <false />
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs access to location when open.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+<<<<<<< HEAD
+
+    <key>NSPhotoLibraryUsageDescription</key>
+    <key>NSCameraUsageDescription</key>
+    <key>NSMicrophoneUsageDescription</key>
+=======
+    <string>This app needs access to location when in the background.</string>
+>>>>>>> a45d2fb55eeff9713bcc38f65fe3b930f764beb0
 </dict>
 </plist>

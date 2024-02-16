@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:waves/components/tool_box.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../model/location.dart';
-import 'host_event_page.dart';
-import 'package:waves/constants.dart';
+import 'search_event_page.dart';
 import 'dart:io' show Platform;
+import 'package:waves/view/post_event_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,17 +16,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
     super.initState();
-    // if (Platform.isAndroid) {
-    //   flutterLocalNotificationsPlugin
-    //       .resolvePlatformSpecificImplementation<
-    //           AndroidFlutterLocalNotificationsPlugin>()
-    //       ?.requestNotificationsPermission();
-    // }
+    if (Platform.isAndroid) {
+      flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+          ?.requestNotificationsPermission();
+    }
     NotificationService.initial(flutterLocalNotificationsPlugin);
     NotificationService.getNotificationOnFirebase(
       flutterLocalNotificationsPlugin,
@@ -123,14 +122,15 @@ class _HomePageState extends State<HomePage> {
                             title: 'Hold\nEvent',
                             icon: Icons.library_books_rounded,
                             iconColor: Colors.amber.shade500,
-                            onTap: () async {
-                              await NotificationService.promoteEvent(
-                                notiType: NotiType.fine,
-                                location: 'New Taipei City',
-                                initiator: 'Chi-Yu',
-                                flutterLocalNotificationsPlugin:
-                                    flutterLocalNotificationsPlugin,
-                              );
+                            onTap: () {
+                              // await NotificationService.promoteEvent(
+                              //   notiType: NotiType.fine,
+                              //   initiator: 'Chi-Yu',
+                              //   flutterLocalNotificationsPlugin:
+                              //       flutterLocalNotificationsPlugin,
+                              // );
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => PostEventPage()));
                             },
                           ),
                         ],
@@ -139,35 +139,23 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           ToolBox(
                             color: Colors.blueGrey.shade300,
-                            title: 'Waves\nRank',
-                            icon: Icons.star_outline_rounded,
+                            title: 'Search\nEvent',
+                            icon: Icons.search_rounded,
                             iconColor: Colors.deepOrangeAccent.shade200,
-                            onTap: () {},
+                            onTap: () async {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => HostEventPage(),
+                                ),
+                              );
+                            },
                           ),
                           ToolBox(
                             color: Colors.blueGrey.shade300,
                             title: 'Needs\nHelp',
                             icon: Icons.help_rounded,
                             iconColor: Colors.green.shade300,
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => HostEventPage(
-                                    location: Location(
-                                      name: 'name',
-                                      city: 'city',
-                                      district: 'district',
-                                      fullAddress: 'fullAddress',
-                                      street: 'street',
-                                      streetNumber: 'streetNumber',
-                                      village: 'village',
-                                      picture: 'picture',
-                                      rate: 3,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
+                            onTap: () {},
                           ),
                         ],
                       ),
