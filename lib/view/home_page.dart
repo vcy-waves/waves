@@ -82,39 +82,28 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const ProfilePage()));
-                        },
-                        onLongPress: () async {
-                          await FirebaseAuth.instance.signOut();
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const LoginPage()));
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.only(top: 30, left: 20.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Hi Yi-Tong',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontFamily: 'Playpen_Sans',
-                                  fontSize: 25.0,
-                                ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 30, left: 20.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Hi Yi-Tong',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontFamily: 'Playpen_Sans',
+                                fontSize: 25.0,
                               ),
-                              Text(
-                                'You have been clean up 5 times',
-                                style: TextStyle(
-                                  fontFamily: 'Playpen_Sans',
-                                  fontSize: 18.0,
-                                ),
+                            ),
+                            Text(
+                              'You have been clean up 5 times',
+                              style: TextStyle(
+                                fontFamily: 'Playpen_Sans',
+                                fontSize: 18.0,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                       const Expanded(child: SizedBox()),
@@ -142,6 +131,7 @@ class _HomePageState extends State<HomePage> {
                               await NotificationService.promoteEvent(
                                 notiType: NotiType.fine,
                                 initiator: 'Chi-Yu',
+                                location: 'baishawan',
                                 flutterLocalNotificationsPlugin:
                                     flutterLocalNotificationsPlugin,
                               );

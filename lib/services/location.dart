@@ -25,6 +25,30 @@ class LocatingService {
     required double destinationLatitude,
     required double destinationLongitude,
   }) async {
+    Map data = await _distanceMatrix(
+      destinationLatitude: destinationLatitude,
+      destinationLongitude: destinationLongitude,
+    );
+    String duration = data['rows'][0]['elements'][0]['duration']['text'];
+    return duration;
+  }
+
+  static Future<String> calculateDistance({
+    required double destinationLatitude,
+    required double destinationLongitude,
+  }) async {
+    Map data = await _distanceMatrix(
+      destinationLatitude: destinationLatitude,
+      destinationLongitude: destinationLongitude,
+    );
+    String distance = data['rows'][0]['elements'][0]['distance']['text'];
+    return distance;
+  }
+
+  static Future<Map<String, dynamic>> _distanceMatrix({
+    required double destinationLatitude,
+    required double destinationLongitude,
+  }) async {
     Position position = await determinePosition();
     final String originPlaceId = await _findUserActualPlaceId(
       latitude: position.latitude,
@@ -47,8 +71,7 @@ class LocatingService {
     if (data['status'] != 'OK') {
       throw (Exception('Distance Matrix Error'));
     } else {
-      String duration = data['rows'][0]['elements'][0]['duration']['text'];
-      return duration;
+      return data;
     }
   }
 

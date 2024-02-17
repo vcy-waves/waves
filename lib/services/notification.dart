@@ -7,21 +7,19 @@ import 'package:geolocator/geolocator.dart';
 class NotificationService {
   static final _firestore = FirebaseFirestore.instance;
 
-  static Future<bool> checkIfEventIsNearBy(
+  static Future<bool> _checkIfEventIsNearBy(
       {required double destinationLatitude,
       required double destinationLongitude}) async {
     String duration = await LocatingService.calculateArrivalTime(
       destinationLatitude: destinationLatitude,
       destinationLongitude: destinationLongitude,
     );
-    String time = duration.split(' ')[0];
+    int time = int.parse(duration.split(' ')[0]);
     String unit = duration.split(' ')[1];
-    if (unit != 'mins') return false;
-    if (int.parse(time) < 30) {
-      print('sent');
+    if (!unit.contains('min')) return false;
+    if (time <= 30) {
       return true;
     } else {
-      print('refused');
       return false;
     }
   }
@@ -33,14 +31,20 @@ class NotificationService {
         final notiModel = NotiModel(
           title: noti['title'],
           body: noti['body'],
-          organizer: noti['initiator'],
+          initiator: noti['initiator'],
           lng: noti['lon'],
           lat: noti['lat'],
+          location: noti['location'],
         );
-        bool sendingAllowed = await checkIfEventIsNearBy(
+        bool sendingAllowed = await _checkIfEventIsNearBy(
           destinationLatitude: notiModel.lat,
           destinationLongitude: notiModel.lng,
         );
+        String distance = await LocatingService.calculateDistance(
+          destinationLatitude: notiModel.lat,
+          destinationLongitude: notiModel.lng,
+        );
+        notiModel.distance = distance;
         if (sendingAllowed) {
           await showNotification(
             notiModel: notiModel,
@@ -54,6 +58,7 @@ class NotificationService {
   static Future<void> promoteEvent({
     required NotiType notiType,
     required String initiator,
+    required String location,
     required FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin,
   }) async {
     final Position position = await LocatingService.determinePosition();
@@ -62,35 +67,40 @@ class NotificationService {
       noti = NotiModel(
         title: 'Waves',
         body: 'We need you to tidy up this ocean with us now !',
+        location: location,
         lat: position.latitude,
         lng: position.longitude,
-        organizer: initiator,
+        initiator: initiator,
       );
     } else if (notiType == NotiType.normal) {
       noti = NotiModel(
         title: 'Waves',
-        body: 'Normal',
+        body: 'Come to clean up this ocean or take a rest.',
+        location: location,
         lat: position.latitude,
         lng: position.longitude,
-        organizer: initiator,
+        initiator: initiator,
       );
     } else {
       noti = NotiModel(
         title: 'Waves',
         body: 'Come to visit this gorgeous ocean',
+        location: location,
         lat: position.latitude,
         lng: position.longitude,
-        organizer: initiator,
+        initiator: initiator,
       );
     }
     _firestore.collection('notification').doc('channel').set({
       'title': noti.title,
       'body': noti.body,
-      'initiator': noti.organizer,
+      'initiator': noti.initiator,
       'lat': noti.lat,
       'lon': noti.lng,
+      'location': noti.location,
     }).then((value) =>
         _firestore.collection('notification').doc('channel').delete());
+    // });
   }
 
   static Future initial(
@@ -124,7 +134,9 @@ class NotificationService {
     await flutterLocalNotificationsPlugin.show(
       0,
       notiModel.title,
-      notiModel.body,
+      '${notiModel.body} \n'
+      '${notiModel.location} \t'
+      '${notiModel.distance} away',
       notificationDetails,
     );
   }
@@ -133,14 +145,18 @@ class NotificationService {
 class NotiModel {
   String title;
   String body;
-  String organizer;
+  String initiator;
   double lat;
   double lng;
+  String? distance;
+  String location;
 
   NotiModel({
+    this.distance,
+    required this.location,
     required this.title,
     required this.body,
-    required this.organizer,
+    required this.initiator,
     required this.lat,
     required this.lng,
   });
