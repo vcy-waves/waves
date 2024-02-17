@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       User? user = _auth.currentUser;
       if (user != null) {
+        AccountService.fetchAccount();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const HomePage()));
       }
