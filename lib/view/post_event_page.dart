@@ -93,15 +93,15 @@ class _PostEventPageState extends State<PostEventPage> {
             onPressed: () async {
               // XFile? image =
               //     await _picker.pickImage(source: ImageSource.camera);
-              PostService.post(
-                post: Post(
-                  location: 'location',
-                  initiator: 'initiator',
-                  lastUpdate: _selectedDay,
-                  id: 1,
-                ),
-              );
-              PostService.showAllPosts();
+              // PostService.post(
+              //   post: Post(
+              //     location: 'location',
+              //     initiator: 'initiator',
+              //     lastUpdate: _selectedDay,
+              //     id: 1,
+              //   ),
+              // );
+              // PostService.showAllPosts();
             },
             child: const Text(
               'Upload Current Image',

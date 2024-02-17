@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:waves/constants.dart';
 
-class HostEventPage extends StatelessWidget {
+class SearchPostPage extends StatelessWidget {
   final DateTime updateTime = DateTime(2024, 2, 13, 9, 10);
 
-  HostEventPage({super.key});
+  SearchPostPage({super.key});
 
   @override
   Widget build(BuildContext context) {
