@@ -179,9 +179,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                             (states) {
                                       if (states
                                           .contains(MaterialState.pressed)) {
-                                        return Color(0xFF40A2E3);
+                                        return const Color(0xFF40A2E3);
                                       }
-                                      return Color(0xFFBBE2EC);
+                                      return const Color(0xFFBBE2EC);
                                     }),
                                   ),
                                 ),
@@ -189,7 +189,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
