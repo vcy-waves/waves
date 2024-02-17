@@ -53,5 +53,10 @@
     <key>NSPhotoLibraryUsageDescription</key>
     <key>NSCameraUsageDescription</key>
     <key>NSMicrophoneUsageDescription</key>
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+        <string>dev.flutter.background.refresh</string>
+    </array>
+
 </dict>
 </plist>
