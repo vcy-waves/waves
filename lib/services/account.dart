@@ -5,7 +5,12 @@ class AccountService {
   static final _firebase = FirebaseFirestore.instance;
   static final _auth = FirebaseAuth.instance;
   static Map<String, dynamic> _account = {};
-  static Map<String, dynamic> get account =>_account;
+
+  static Map<String, dynamic> get account => _account;
+
+  static Future<void> logout() async {
+    await _auth.signOut();
+  }
 
   static Future<void> fetchAccount() async {
     final String? email = _fetchEmail();
@@ -16,7 +21,7 @@ class AccountService {
     if (data!.isEmpty) {
       throw Exception('No such user');
     }
-    if(id!.isEmpty){
+    if (id!.isEmpty) {
       throw Exception('No such user');
     }
 

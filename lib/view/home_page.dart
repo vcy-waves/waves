@@ -1,4 +1,6 @@
+import 'package:waves/services/account.dart';
 import 'package:waves/services/notification.dart';
+import 'package:waves/view/login_page.dart';
 import 'package:waves/view/search_event_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -78,28 +80,35 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(top: 30, left: 20.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Hi Yi-Tong',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontFamily: 'Playpen_Sans',
-                                fontSize: 25.0,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30, left: 20.0),
+                        child: GestureDetector(
+                          onDoubleTap: () async {
+                            await AccountService.logout();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const LoginPage()));
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Hi ${AccountService.account['name']}',
+                                textAlign: TextAlign.left,
+                                style: const TextStyle(
+                                  fontFamily: 'Playpen_Sans',
+                                  fontSize: 25.0,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'You have been clean up 5 times',
-                              style: TextStyle(
-                                fontFamily: 'Playpen_Sans',
-                                fontSize: 18.0,
+                              const Text(
+                                'You have been clean up 5 times',
+                                style: TextStyle(
+                                  fontFamily: 'Playpen_Sans',
+                                  fontSize: 18.0,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       const Expanded(child: SizedBox()),
@@ -151,8 +160,13 @@ class _HomePageState extends State<HomePage> {
                             icon: Icons.help_rounded,
                             iconColor: Colors.green.shade300,
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const ProfilePage()));
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => ProfilePage(
+                                    email: AccountService.account['email'],
+                                  ),
+                                ),
+                              );
                             },
                           ),
                         ],

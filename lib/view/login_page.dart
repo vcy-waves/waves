@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       User? user = _auth.currentUser;
       if (user != null) {
+        AccountService.fetchAccount();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const HomePage()));
       }
@@ -58,7 +59,8 @@ class _LoginPageState extends State<LoginPage> {
                         keyboardType: TextInputType.emailAddress,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(top: 20,bottom: 20),
+                          contentPadding:
+                              const EdgeInsets.only(top: 20, bottom: 20),
                           hintText: 'enter your email',
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
@@ -78,7 +80,8 @@ class _LoginPageState extends State<LoginPage> {
                         obscureText: true,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(left: 45,top: 20,bottom: 20),
+                          contentPadding: const EdgeInsets.only(
+                              left: 45, top: 20, bottom: 20),
                           hintText: 'enter your password',
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
@@ -97,11 +100,12 @@ class _LoginPageState extends State<LoginPage> {
                                 UserCredential user =
                                     await _auth.signInWithEmailAndPassword(
                                         email: email, password: password);
-                                // _auth.setPersistence(Persistence.LOCAL);
+                                await AccountService.fetchAccount();
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => const HomePage()));
+                                        builder: (context) =>
+                                            const HomePage()));
                               } catch (e) {
                                 print(e);
                               }
@@ -117,15 +121,16 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const RegistrationPage()));
+                                  builder: (context) =>
+                                      const RegistrationPage()));
                         },
-                        child: const Text("Don't have any account?",style: TextStyle(
-                          // backgroundColor:Colors.grey,
-                        ),),
+                        child: const Text(
+                          "Don't have any account?",
+                          style: TextStyle(
+                              // backgroundColor:Colors.grey,
+                              ),
+                        ),
                       ),
-                      IconButton(onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> ProfilePage(email: email)));
-                      }, icon: const Icon(Icons.person_2_outlined),),
                     ],
                   ),
                 ),
