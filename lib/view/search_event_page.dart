@@ -13,7 +13,12 @@ class HostEventPage extends StatefulWidget {
 
 class _HostEventPageState extends State<HostEventPage> {
   List posts = [];
+  Uint8List image = Uint8List.fromList([1,2,3]);
   final DateTime updateTime = DateTime(2024, 2, 13, 9, 10);
+  Future<Uint8List?> updateImage()async{
+    Uint8List image = await PostService.fetchImage(1);
+    return image;
+  }
 
   @override
   void initState() {
@@ -35,12 +40,21 @@ class _HostEventPageState extends State<HostEventPage> {
       body: ListView.builder(
         itemCount: posts.length,
         itemBuilder: (context, index) {
-          return PostWidget(
-            updateTime: DateTime.now(),
-            image: posts[index].image,
-            location: posts[index].location,
-            initiator: posts[index].initiator,
-          );
+          return Image.memory(image);
+          // return PostWidget(
+          //   updateTime: DateTime.now(),
+          //   image: posts[index].image,
+          //   location: posts[index].location,
+          //   initiator: posts[index].initiator,
+          // );
+        },
+      ),
+      floatingActionButton:IconButton(
+        icon: Icon(Icons.exposure_plus_1),
+        onPressed: ()async{
+          image = (await updateImage())!;
+          setState(() {
+          });
         },
       ),
     );

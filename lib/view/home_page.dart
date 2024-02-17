@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                             onTap: () async {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => SearchPostPage(),
+                                  builder: (context) => HostEventPage(),
                                 ),
                               );
                             },
@@ -185,3 +185,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+

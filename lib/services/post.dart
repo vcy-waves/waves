@@ -27,14 +27,21 @@ class PostService {
           await _storage.ref().child('images/${map['id']}.jpg').getData();
       print(map['id']);
       print(map['location']);
+
       _posts.add(Post(
         location: map['location'],
         initiator: map['initiator'],
         lastUpdate: DateTime.fromMicrosecondsSinceEpoch(map['lastUpdate']),
         id: map['id'],
-        image: Image.memory(image!),
+        // image: Image.memory(image!),
       ));
     }
+  }
+  static Future<Uint8List> fetchImage(int id) async{
+    Uint8List? image =
+        await _storage.ref().child('images/$id.jpg').getData();
+    return image!;
+
   }
 
   static Future<void> postPost(
