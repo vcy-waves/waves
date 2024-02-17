@@ -3,30 +3,79 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
 class LocatingService {
-  static const String apiKey = 'AIzaSyDraVDjDdbDUXfQlxU6oL396YUx_noYhrs';
-  String timeZone = '';
+  static const String _apiKey = 'AIzaSyDraVDjDdbDUXfQlxU6oL396YUx_noYhrs';
 
-  static Future<String> _findUserActualPlaceId() async {
-    final Position position = await _determinePosition();
-    print(position.longitude);
-    print(position.latitude);
+  static Future<String> _findUserActualPlaceId({
+    required double latitude,
+    required double longitude,
+  }) async {
     final Uri url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.latitude},${position.longitude}&language=zh-TW &location_type=ROOFTOP&result_type=street_address&key=$apiKey');
+      'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&language=zh-TW &location_type=ROOFTOP&result_type=street_address&key=$_apiKey&mode=bicycling',
+    );
     var source = await http.get(url);
     final data = jsonDecode(source.body);
-    return data['results'][0]['place_id'];
+    if (data['status'] != 'OK') {
+      return '';
+    } else {
+      return data['results'][0]['place_id'];
+    }
   }
 
+  static Future<String> calculateArrivalTime({
+    required double destinationLatitude,
+    required double destinationLongitude,
+  }) async {
+    Map data = await _distanceMatrix(
+      destinationLatitude: destinationLatitude,
+      destinationLongitude: destinationLongitude,
+    );
+    String duration = data['rows'][0]['elements'][0]['duration']['text'];
+    return duration;
+  }
 
-  static Future<void> calculateDistance({required destinationPlaceId}) async {
-    final String originPlaceId = await _findUserActualPlaceId();
+  static Future<String> calculateDistance({
+    required double destinationLatitude,
+    required double destinationLongitude,
+  }) async {
+    Map data = await _distanceMatrix(
+      destinationLatitude: destinationLatitude,
+      destinationLongitude: destinationLongitude,
+    );
+    String distance = data['rows'][0]['elements'][0]['distance']['text'];
+    return distance;
+  }
+
+  static Future<Map<String, dynamic>> _distanceMatrix({
+    required double destinationLatitude,
+    required double destinationLongitude,
+  }) async {
+    Position position = await determinePosition();
+    final String originPlaceId = await _findUserActualPlaceId(
+      latitude: position.latitude,
+      longitude: position.longitude,
+    );
+    final String destinationPlaceId = await _findUserActualPlaceId(
+      longitude: destinationLongitude,
+      latitude: destinationLatitude,
+    );
+    if (originPlaceId == '') {
+      throw (Exception('originPlaceId not found'));
+    }
+    if (destinationPlaceId == '') {
+      throw (Exception('destinationPlaceId not found'));
+    }
     final Uri url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=place_id:ChIJgUbEo8cfqokR5lP9_Wh_DaM &origins=place_id:$originPlaceId &key=$apiKey');
+        'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=place_id:$destinationPlaceId&origins=place_id:$originPlaceId&key=$_apiKey');
     var source = await http.get(url);
-    print(source.body);
+    final data = jsonDecode(source.body);
+    if (data['status'] != 'OK') {
+      throw (Exception('Distance Matrix Error'));
+    } else {
+      return data;
+    }
   }
 
-  static Future<Position> _determinePosition() async {
+  static Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
     serviceEnabled = await Geolocator.isLocationServiceEnabled();

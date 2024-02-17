@@ -1,9 +1,12 @@
+import 'package:waves/services/account.dart';
 import 'package:waves/services/notification.dart';
+import 'package:waves/view/login_page.dart';
+import 'package:waves/view/search_event_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:waves/components/tool_box.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'search_event_page.dart';
+import 'package:waves/view/profile_page.dart';
 import 'dart:io' show Platform;
 import 'package:waves/view/post_event_page.dart';
 
@@ -16,7 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
@@ -24,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     if (Platform.isAndroid) {
       flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
+              AndroidFlutterLocalNotificationsPlugin>()
           ?.requestNotificationsPermission();
     }
     NotificationService.initial(flutterLocalNotificationsPlugin);
@@ -77,28 +80,35 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(top: 30, left: 20.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Hi Yi-Tong',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontFamily: 'Playpen_Sans',
-                                fontSize: 25.0,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30, left: 20.0),
+                        child: GestureDetector(
+                          onDoubleTap: () async {
+                            await AccountService.logout();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const LoginPage()));
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Hi ${AccountService.account['name']}',
+                                textAlign: TextAlign.left,
+                                style: const TextStyle(
+                                  fontFamily: 'Playpen_Sans',
+                                  fontSize: 25.0,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'You have been clean up 5 times',
-                              style: TextStyle(
-                                fontFamily: 'Playpen_Sans',
-                                fontSize: 18.0,
+                              const Text(
+                                'You have been clean up 5 times',
+                                style: TextStyle(
+                                  fontFamily: 'Playpen_Sans',
+                                  fontSize: 18.0,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       const Expanded(child: SizedBox()),
@@ -122,15 +132,9 @@ class _HomePageState extends State<HomePage> {
                             title: 'Hold\nEvent',
                             icon: Icons.library_books_rounded,
                             iconColor: Colors.amber.shade500,
-                            onTap: () {
-                              // await NotificationService.promoteEvent(
-                              //   notiType: NotiType.fine,
-                              //   initiator: 'Chi-Yu',
-                              //   flutterLocalNotificationsPlugin:
-                              //       flutterLocalNotificationsPlugin,
-                              // );
+                            onTap: () async {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => PostEventPage()));
+                                  builder: (context) => const PostEventPage()));
                             },
                           ),
                         ],
@@ -145,17 +149,25 @@ class _HomePageState extends State<HomePage> {
                             onTap: () async {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => HostEventPage(),
+                                  builder: (context) => SearchPostPage(),
                                 ),
                               );
                             },
                           ),
                           ToolBox(
                             color: Colors.blueGrey.shade300,
-                            title: 'Needs\nHelp',
+                            title: 'Setup\nProfile',
                             icon: Icons.help_rounded,
                             iconColor: Colors.green.shade300,
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => ProfilePage(
+                                    email: AccountService.account['email'],
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),

@@ -24,7 +24,6 @@ class _PostEventPageState extends State<PostEventPage> {
   TimeOfDay? _time;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -40,7 +39,6 @@ class _PostEventPageState extends State<PostEventPage> {
       );
       _focus.unfocus();
     });
-
   }
 
   @override
@@ -96,8 +94,12 @@ class _PostEventPageState extends State<PostEventPage> {
             onPressed: () async {
               XFile? image =
                   await _picker.pickImage(source: ImageSource.camera);
-              if(image!=null)
-              PostService.postPost(location: _locationName, initiator: AccountService.account['email'], lastUpdate: _selectedDay, image: image);
+              if (image != null)
+                PostService.postPost(
+                    location: _locationName,
+                    initiator: AccountService.account['email'],
+                    lastUpdate: _selectedDay,
+                    image: image);
             },
             child: const Text(
               'Upload Current Image',
