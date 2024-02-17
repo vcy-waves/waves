@@ -88,19 +88,19 @@ class _HomePageState extends State<HomePage> {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => const LoginPage()));
                           },
-                          child: const Column(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Hi Yi-Tong',
+                                'Hi ${AccountService.account['name']}',
                                 textAlign: TextAlign.left,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontFamily: 'Playpen_Sans',
                                   fontSize: 25.0,
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 'You have been clean up 5 times',
                                 style: TextStyle(
                                   fontFamily: 'Playpen_Sans',
