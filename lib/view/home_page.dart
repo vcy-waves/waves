@@ -1,16 +1,12 @@
-import 'package:waves/services/location.dart';
 import 'package:waves/services/notification.dart';
+import 'package:waves/view/search_event_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:waves/components/tool_box.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:waves/view/login_page.dart';
 import 'package:waves/view/profile_page.dart';
-import 'search_event_page.dart';
 import 'dart:io' show Platform;
 import 'package:waves/view/post_event_page.dart';
-import 'package:waves/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -128,15 +124,8 @@ class _HomePageState extends State<HomePage> {
                             icon: Icons.library_books_rounded,
                             iconColor: Colors.amber.shade500,
                             onTap: () async {
-                              await NotificationService.promoteEvent(
-                                notiType: NotiType.fine,
-                                initiator: 'Chi-Yu',
-                                location: 'baishawan',
-                                flutterLocalNotificationsPlugin:
-                                    flutterLocalNotificationsPlugin,
-                              );
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //     builder: (context) => PostEventPage()));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const PostEventPage()));
                             },
                           ),
                         ],
@@ -151,17 +140,20 @@ class _HomePageState extends State<HomePage> {
                             onTap: () async {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => HostEventPage(),
+                                  builder: (context) => SearchPostPage(),
                                 ),
                               );
                             },
                           ),
                           ToolBox(
                             color: Colors.blueGrey.shade300,
-                            title: 'Needs\nHelp',
+                            title: 'Setup\nProfile',
                             icon: Icons.help_rounded,
                             iconColor: Colors.green.shade300,
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const ProfilePage()));
+                            },
                           ),
                         ],
                       ),
