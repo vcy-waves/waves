@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),),
                       ),
                       IconButton(onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>const ProfilePage()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> ProfilePage(email: email)));
                       }, icon: const Icon(Icons.person_2_outlined),),
                     ],
                   ),
