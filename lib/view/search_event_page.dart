@@ -1,11 +1,26 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:waves/constants.dart';
+import 'package:waves/services/post.dart';
 
-class SearchPostPage extends StatelessWidget {
+class HostEventPage extends StatefulWidget {
+  HostEventPage({super.key});
+
+  @override
+  State<HostEventPage> createState() => _HostEventPageState();
+}
+
+class _HostEventPageState extends State<HostEventPage> {
+  List posts = [];
   final DateTime updateTime = DateTime(2024, 2, 13, 9, 10);
 
-  SearchPostPage({super.key});
+  @override
+  void initState() {
+    // TODO: implement initState
+    PostService.fetchPosts();
+    posts = PostService.post;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,25 +32,40 @@ class SearchPostPage extends StatelessWidget {
           style: kSmallTitleTextStyle,
         ),
       ),
-      body: ListView(
-        children: [
-          PostWidget(updateTime: updateTime),
-          PostWidget(updateTime: updateTime),
-          PostWidget(updateTime: updateTime)
-        ],
+      body: ListView.builder(
+        itemCount: posts.length,
+        itemBuilder: (context, index) {
+          return PostWidget(
+            updateTime: DateTime.now(),
+            image: posts[index].image,
+            location: posts[index].location,
+            initiator: posts[index].initiator,
+          );
+        },
       ),
     );
   }
 }
 
-class PostWidget extends StatelessWidget {
+class PostWidget extends StatefulWidget {
   const PostWidget({
     super.key,
     required this.updateTime,
+    required this.image,
+    required this.location,
+    required this.initiator,
   });
 
   final DateTime updateTime;
+  final Image image;
+  final String location;
+  final String initiator;
 
+  @override
+  State<PostWidget> createState() => _PostWidgetState();
+}
+
+class _PostWidgetState extends State<PostWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -52,12 +82,12 @@ class PostWidget extends StatelessWidget {
             title: Text('location name', style: kSmallTitleTextStyle),
           ),
           const Gap(10),
-          Image.asset('images/ocean/baishawan/baishawan1.jpg'),
+          widget.image,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Last update : ${DateTime.now().difference(updateTime).inHours} hr ago',
+                'Last update : ${DateTime.now().difference(widget.updateTime).inHours} hr ago',
                 style: kSmallTitleTextStyle.copyWith(
                   fontSize: 17.0,
                 ),

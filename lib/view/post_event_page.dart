@@ -5,8 +5,8 @@ import 'package:waves/components/customer_search_delegate.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:waves/model/post.dart';
 import 'package:waves/services/post.dart';
+import 'package:waves/services/account.dart';
 
 class PostEventPage extends StatefulWidget {
   const PostEventPage({super.key});
@@ -28,6 +28,7 @@ class _PostEventPageState extends State<PostEventPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    AccountService.fetchAccount();
     _focus.addListener(() {
       showSearch(
         context: context,
@@ -91,17 +92,14 @@ class _PostEventPageState extends State<PostEventPage> {
           ),
           TextButton(
             onPressed: () async {
-              // XFile? image =
-              //     await _picker.pickImage(source: ImageSource.camera);
-              // PostService.post(
-              //   post: Post(
-              //     location: 'location',
-              //     initiator: 'initiator',
-              //     lastUpdate: _selectedDay,
-              //     id: 1,
-              //   ),
-              // );
-              // PostService.showAllPosts();
+              XFile? image =
+                  await _picker.pickImage(source: ImageSource.camera);
+              if (image != null)
+                PostService.postPost(
+                    location: _locationName,
+                    initiator: AccountService.account['email'],
+                    lastUpdate: _selectedDay,
+                    image: image);
             },
             child: const Text(
               'Upload Current Image',
