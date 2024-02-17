@@ -8,10 +8,7 @@ import 'package:waves/components/tool_box.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:waves/view/profile_page.dart';
 import 'dart:io' show Platform;
-import 'package:waves/view/post_event_page.dart';
 import 'package:waves/constants.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
-import 'dart:ui';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,7 +25,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    initService();
     if (Platform.isAndroid) {
       flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
@@ -167,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                             onTap: () async {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => SearchPostPage(),
+                                  builder: (context) => HostEventPage(),
                                 ),
                               );
                             },
