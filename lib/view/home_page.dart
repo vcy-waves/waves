@@ -8,10 +8,8 @@ import 'package:waves/components/tool_box.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:waves/view/profile_page.dart';
 import 'dart:io' show Platform;
-import 'package:waves/view/post_event_page.dart';
 import 'package:waves/constants.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
-import 'dart:ui';
+import 'package:waves/view/post_event_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,7 +18,6 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-
 class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -28,7 +25,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    initService();
     if (Platform.isAndroid) {
       flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
@@ -144,15 +140,15 @@ class _HomePageState extends State<HomePage> {
                             icon: Icons.library_books_rounded,
                             iconColor: Colors.amber.shade500,
                             onTap: () async {
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //     builder: (context) => const PostEventPage()));
-                              await NotificationService.promoteEvent(
-                                notiType: NotiType.fine,
-                                initiator: 'chiyu',
-                                location: 'location',
-                                flutterLocalNotificationsPlugin:
-                                    flutterLocalNotificationsPlugin,
-                              );
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const PostEventPage()));
+                              // await NotificationService.promoteEvent(
+                              //   notiType: NotiType.fine,
+                              //   initiator: 'chiyu',
+                              //   location: 'location',
+                              //   flutterLocalNotificationsPlugin:
+                              //       flutterLocalNotificationsPlugin,
+                              // );
                             },
                           ),
                         ],
@@ -167,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                             onTap: () async {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => SearchPostPage(),
+                                  builder: (context) => HostEventPage(),
                                 ),
                               );
                             },
