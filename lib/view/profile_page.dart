@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:waves/services/users.dart';
 import 'package:waves/services/account.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfilePage extends StatefulWidget {
+  final String email;
   const ProfilePage({
     super.key,
+    required this.email
   });
 
   @override
@@ -17,24 +17,10 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   Image photo = Image.asset('images/ocean/cover_7.JPG');
   final _firestore = FirebaseFirestore.instance;
-  String email = '';
-  String name = '';
-  String address = '';
   bool broadcasting = true;
   String changedName = '';
   String changedEmail = '';
   String changedAddress = '';
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    AccountService.fetchAccount();
-    email = AccountService.account['email'];
-    name = AccountService.account['name'];
-    address = AccountService.account['address'];
-    broadcasting = AccountService.account['broadcasting'];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           radius: 53,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Expanded(
@@ -77,17 +63,17 @@ class _ProfilePageState extends State<ProfilePage> {
                             borderRadius: BorderRadius.all(Radius.circular(50)),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 30),
                             child: Column(
                               children: [
-                                Text(
+                                const Text(
                                   '-Personal Info-',
                                   style: TextStyle(
                                     fontFamily: 'Playpen_Sans',
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 25,
                                 ),
                                 TextField(
@@ -96,8 +82,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   },
                                   textAlign: TextAlign.center,
                                   decoration: InputDecoration(
-                                    hintText: name,
-                                    contentPadding: EdgeInsets.all(12),
+                                    hintText: AccountService.account['name'],
+                                    contentPadding: const EdgeInsets.all(12),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(50),
                                     ),
@@ -106,7 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 25,
                                 ),
                                 TextField(
@@ -115,8 +101,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   },
                                   textAlign: TextAlign.center,
                                   decoration: InputDecoration(
-                                    hintText: email,
-                                    contentPadding: EdgeInsets.all(12),
+                                    hintText: AccountService.account['email'],
+                                    contentPadding: const EdgeInsets.all(12),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(50),
                                     ),
@@ -125,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 25,
                                 ),
                                 TextField(
@@ -134,8 +120,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   },
                                   textAlign: TextAlign.center,
                                   decoration: InputDecoration(
-                                    hintText: address,
-                                    contentPadding: EdgeInsets.all(12),
+                                    hintText: AccountService.account['address'],
+                                    contentPadding: const EdgeInsets.all(12),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(50),
                                     ),
@@ -144,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 25,
                                 ),
                                 Row(
@@ -152,7 +138,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   children: [
                                     Checkbox(
                                       checkColor: Colors.white,
-                                      value: broadcasting,
+                                      value: AccountService.account['broadcasting'],
                                       hoverColor: Colors.grey,
                                       focusColor: Colors.blue,
                                       activeColor: Colors.blue,
@@ -161,7 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         broadcasting = value!;
                                       },
                                     ),
-                                    Text(
+                                    const Text(
                                       'allow to receive email from waves',
                                       style: TextStyle(
                                         color: Colors.black54,
@@ -170,22 +156,21 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 15,
                                 ),
                                 IconButton(
                                   onPressed: () {
-                                    final data = _firestore
-                                        .collection('users')
-                                        .doc(email);
+                                    final data = _firestore.collection('users').doc(widget.email);
                                     data.update({
-                                      'name': name,
-                                      'email': email,
-                                      'address': address,
+                                      'name': changedName,
+                                      'email': changedEmail,
+                                      'address': changedAddress,
                                       'broadcasting': broadcasting,
                                     });
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
+
                                     FontAwesomeIcons.pencil,
                                   ),
                                   style: ButtonStyle(
@@ -194,9 +179,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                             (states) {
                                       if (states
                                           .contains(MaterialState.pressed)) {
-                                        return Color(0xFF40A2E3);
+                                        return const Color(0xFF40A2E3);
                                       }
-                                      return Color(0xFFBBE2EC);
+                                      return const Color(0xFFBBE2EC);
                                     }),
                                   ),
                                 ),

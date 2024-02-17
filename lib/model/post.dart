@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
+
 import 'package:image_picker/image_picker.dart';
 
 class Post {
   final String location;
   final DateTime lastUpdate;
-  XFile? image;
+  Image? image;
   final String initiator;
   final int id;
 
