@@ -17,31 +17,24 @@ class PostService {
 
   static List<dynamic> get image => _images;
 
-  static void fetchPosts() async {
+  static Future<void> fetchPosts() async {
     String image = '';
     await _firestore.collection('counter').doc('counter').get();
     final sourceFromDatabase = await _firestore.collection('posts').get();
     for (var post in sourceFromDatabase.docs) {
       var map = post.data();
-      Uint8List? image =
-          await _storage.ref().child('images/${map['id']}.jpg').getData();
+      String? url =
+          await _storage.ref().child('images/${map['id']}.jpg').getDownloadURL();
       print(map['id']);
       print(map['location']);
-
       _posts.add(Post(
         location: map['location'],
         initiator: map['initiator'],
         lastUpdate: DateTime.fromMicrosecondsSinceEpoch(map['lastUpdate']),
         id: map['id'],
-        // image: Image.memory(image!),
+        image: Image.network(url),
       ));
     }
-  }
-  static Future<Uint8List> fetchImage(int id) async{
-    Uint8List? image =
-        await _storage.ref().child('images/$id.jpg').getData();
-    return image!;
-
   }
 
   static Future<void> postPost(
@@ -64,7 +57,7 @@ class PostService {
       'initiator': initiator,
       'lastUpdate': lastUpdateToEpoch,
     });
-    _firestore.collection('posts').doc('count').update({
+    _firestore.collection('counter').doc('counter').update({
       'count': id,
     });
     try {

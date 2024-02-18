@@ -13,18 +13,20 @@ class HostEventPage extends StatefulWidget {
 
 class _HostEventPageState extends State<HostEventPage> {
   List posts = [];
-  Uint8List image = Uint8List.fromList([1,2,3]);
   final DateTime updateTime = DateTime(2024, 2, 13, 9, 10);
-  Future<Uint8List?> updateImage()async{
-    Uint8List image = await PostService.fetchImage(1);
-    return image;
+  bool isVisible = true;
+
+  Future<void> updatePost() async {
+    await PostService.fetchPosts();
+    posts = PostService.post;
+    isVisible = false;
+    setState(() {});
   }
 
   @override
   void initState() {
     // TODO: implement initState
-    PostService.fetchPosts();
-    posts = PostService.post;
+    updatePost();
   }
 
   @override
@@ -37,25 +39,34 @@ class _HostEventPageState extends State<HostEventPage> {
           style: kSmallTitleTextStyle,
         ),
       ),
-      body: ListView.builder(
-        itemCount: posts.length,
-        itemBuilder: (context, index) {
-          return Image.memory(image);
-          // return PostWidget(
-          //   updateTime: DateTime.now(),
-          //   image: posts[index].image,
-          //   location: posts[index].location,
-          //   initiator: posts[index].initiator,
-          // );
-        },
-      ),
-      floatingActionButton:IconButton(
-        icon: Icon(Icons.exposure_plus_1),
-        onPressed: ()async{
-          image = (await updateImage())!;
-          setState(() {
-          });
-        },
+      body: Column(
+        children: [
+          Visibility(
+            visible: isVisible,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: Colors.blue,
+                strokeAlign: BorderSide.strokeAlignCenter,
+              ),
+            ),
+          ),
+          Visibility(
+            visible: !isVisible,
+            child: Expanded(
+              child: ListView.builder(
+                itemCount: posts.length,
+                itemBuilder: (context, index) {
+                  return PostWidget(
+                    updateTime: DateTime.now(),
+                    image: posts[index].image,
+                    location: posts[index].location,
+                    initiator: posts[index].initiator,
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

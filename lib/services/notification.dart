@@ -45,12 +45,16 @@ class NotificationService {
           destinationLongitude: notiModel.lng,
         );
         notiModel.distance = distance;
-        if (sendingAllowed) {
-          await showNotification(
-            notiModel: notiModel,
-            flutterLocalNotificationsPlugin: flutterLocalNotificationsPlugin,
-          );
-        }
+        await showNotification(
+          notiModel: notiModel,
+          flutterLocalNotificationsPlugin: flutterLocalNotificationsPlugin,
+        );
+        // if (sendingAllowed) {
+        //   await showNotification(
+        //     notiModel: notiModel,
+        //     flutterLocalNotificationsPlugin: flutterLocalNotificationsPlugin,
+        //   );
+        // }
       }
     }
   }
