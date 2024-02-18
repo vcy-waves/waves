@@ -14,12 +14,19 @@ class HostEventPage extends StatefulWidget {
 class _HostEventPageState extends State<HostEventPage> {
   List posts = [];
   final DateTime updateTime = DateTime(2024, 2, 13, 9, 10);
+  bool isVisible = true;
+
+  Future<void> updatePost() async {
+    await PostService.fetchPosts();
+    posts = PostService.post;
+    isVisible = false;
+    setState(() {});
+  }
 
   @override
   void initState() {
     // TODO: implement initState
-    PostService.fetchPosts();
-    posts = PostService.post;
+    updatePost();
   }
 
   @override
@@ -32,16 +39,34 @@ class _HostEventPageState extends State<HostEventPage> {
           style: kSmallTitleTextStyle,
         ),
       ),
-      body: ListView.builder(
-        itemCount: posts.length,
-        itemBuilder: (context, index) {
-          return PostWidget(
-            updateTime: DateTime.now(),
-            image: posts[index].image,
-            location: posts[index].location,
-            initiator: posts[index].initiator,
-          );
-        },
+      body: Column(
+        children: [
+          Visibility(
+            visible: isVisible,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: Colors.blue,
+                strokeAlign: BorderSide.strokeAlignCenter,
+              ),
+            ),
+          ),
+          Visibility(
+            visible: !isVisible,
+            child: Expanded(
+              child: ListView.builder(
+                itemCount: posts.length,
+                itemBuilder: (context, index) {
+                  return PostWidget(
+                    updateTime: DateTime.now(),
+                    image: posts[index].image,
+                    location: posts[index].location,
+                    initiator: posts[index].initiator,
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

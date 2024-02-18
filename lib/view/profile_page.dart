@@ -170,7 +170,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                     });
                                   },
                                   icon: const Icon(
-
                                     FontAwesomeIcons.pencil,
                                   ),
                                   style: ButtonStyle(
