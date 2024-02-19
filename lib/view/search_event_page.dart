@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:http/http.dart';
 import 'package:waves/constants.dart';
 import 'package:waves/services/post.dart';
 import 'package:lottie/lottie.dart';
 import 'package:waves/test_list.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class HostEventPage extends StatefulWidget {
   HostEventPage({super.key});
 
@@ -84,7 +83,7 @@ class _HostEventPageState extends State<HostEventPage>
 }
 
 class PostWidget extends StatefulWidget {
-  const PostWidget({
+  PostWidget({
     super.key,
     required this.updateTime,
     required this.image,
@@ -92,6 +91,7 @@ class PostWidget extends StatefulWidget {
     required this.initiator,
   });
 
+  bool like = false;
   final String updateTime;
   final Image image;
   final String location;
@@ -112,8 +112,7 @@ class _PostWidgetState extends State<PostWidget> {
           const Gap(10),
           ListTile(
             leading: const CircleAvatar(
-              backgroundImage:
-                  AssetImage('images/ocean/baishawan/baishawan1.jpg'),
+              backgroundImage: AssetImage('images/ocean/cover_7.JPG'),
             ),
             title: Text(
               widget.location,
@@ -135,8 +134,19 @@ class _PostWidgetState extends State<PostWidget> {
                 ),
               ),
               IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.house),
+                onPressed: () {
+                  setState(() {
+                    widget.like = !widget.like;
+                  });
+                },
+                icon: widget.like
+                    ? const FaIcon(
+                        FontAwesomeIcons.solidHeart,
+                        color: Color(0xFFF28585),
+                      )
+                    : const FaIcon(
+                        FontAwesomeIcons.heart,
+                      ),
               ),
             ],
           ),

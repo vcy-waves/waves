@@ -1,10 +1,12 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-
+import 'package:waves/services/notification.dart';
 import 'package:waves/model/post.dart';
+import 'package:waves/constants.dart';
 
 class PostService {
   static final _firestore = FirebaseFirestore.instance;
@@ -15,6 +17,8 @@ class PostService {
   static List<dynamic> get post => _posts;
 
   static List<dynamic> get image => _images;
+  static final flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   static Future<void> fetchPosts() async {
     await _firestore.collection('counter').doc('counter').get();
@@ -64,6 +68,12 @@ class PostService {
     } on FirebaseException catch (e) {
       print(e);
     }
+    await NotificationService.promoteEvent(
+      notiType: NotiType.fine,
+      initiator: initiator,
+      location: location,
+      flutterLocalNotificationsPlugin: flutterLocalNotificationsPlugin,
+    );
   }
 
   static String lastUpdate({required Post post}) {
