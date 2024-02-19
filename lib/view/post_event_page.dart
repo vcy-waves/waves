@@ -71,7 +71,7 @@ class _PostEventPageState extends State<PostEventPage> {
           if (image != null) {
             await PostService.postPost(
               location: _locationName,
-              initiator: AccountService.account['email'],
+              initiator: AccountService.account['name'],
               lastUpdate: _selectedDay,
               image: image!,
             );
