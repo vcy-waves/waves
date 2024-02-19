@@ -1,7 +1,6 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -18,15 +17,15 @@ class PostService {
   static List<dynamic> get image => _images;
 
   static Future<void> fetchPosts() async {
-    String image = '';
     await _firestore.collection('counter').doc('counter').get();
     final sourceFromDatabase = await _firestore.collection('posts').get();
     for (var post in sourceFromDatabase.docs) {
       var map = post.data();
-      String? url =
-      await _storage.ref().child('images/${map['id']}.jpg').getDownloadURL();
-      print(map['id']);
-      print(map['location']);
+
+      String? url = await _storage
+          .ref()
+          .child('images/${map['id']}.jpg')
+          .getDownloadURL();
       _posts.add(Post(
         location: map['location'],
         initiator: map['initiator'],
@@ -64,6 +63,21 @@ class PostService {
       await _storage.ref('images/$id.jpg').putFile(file);
     } on FirebaseException catch (e) {
       print(e);
+    }
+  }
+
+  static String lastUpdate({required Post post}) {
+    DateTime now = DateTime.now();
+    Duration duration = now.difference(post.lastUpdate);
+
+    if (duration.compareTo(const Duration(days: 1)) > 0) {
+      return '${duration.inDays} days';
+    } else if (duration.compareTo(const Duration(hours: 1)) > 0) {
+      return '${duration.inHours} hours';
+    } else if (duration.compareTo(const Duration(minutes: 1)) > 0) {
+      return '${duration.inMinutes} minutes';
+    } else {
+      return '${duration.inSeconds} seconds';
     }
   }
 }

@@ -59,6 +59,9 @@ flutter:
     - family: Playpen_Sans
       fonts:
         - asset: assets/fonts/Playpen_Sans/PlaypenSans-VariableFont_wght.ttf
+    - family: ChenYuLuoYan
+      fonts:
+        - asset: assets/fonts/ChenYuluoyan-Thin.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

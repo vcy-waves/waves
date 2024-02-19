@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:http/http.dart';
 import 'package:waves/constants.dart';
 import 'package:waves/services/post.dart';
 import 'package:lottie/lottie.dart';
+import 'package:waves/test_list.dart';
 
 class HostEventPage extends StatefulWidget {
   HostEventPage({super.key});
@@ -66,7 +68,7 @@ class _HostEventPageState extends State<HostEventPage>
                 itemCount: posts.length,
                 itemBuilder: (context, index) {
                   return PostWidget(
-                    updateTime: DateTime.now(),
+                    updateTime: PostService.lastUpdate(post: posts[index]),
                     image: posts[index].image,
                     location: posts[index].location,
                     initiator: posts[index].initiator,
@@ -90,7 +92,7 @@ class PostWidget extends StatefulWidget {
     required this.initiator,
   });
 
-  final DateTime updateTime;
+  final String updateTime;
   final Image image;
   final String location;
   final String initiator;
@@ -108,12 +110,18 @@ class _PostWidgetState extends State<PostWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Gap(10),
-          const ListTile(
-            leading: CircleAvatar(
+          ListTile(
+            leading: const CircleAvatar(
               backgroundImage:
                   AssetImage('images/ocean/baishawan/baishawan1.jpg'),
             ),
-            title: Text('location name', style: kSmallTitleTextStyle),
+            title: Text(
+              widget.location,
+              style: kSmallTitleTextStyle.copyWith(
+                  fontFamily: 'ChenYuLuoYan',
+                  fontSize: 23,
+                  fontWeight: FontWeight.w600),
+            ),
           ),
           const Gap(10),
           widget.image,
@@ -121,9 +129,9 @@ class _PostWidgetState extends State<PostWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Last update : ${DateTime.now().difference(widget.updateTime).inHours} hr ago',
+                'Last update : ${widget.updateTime} ago',
                 style: kSmallTitleTextStyle.copyWith(
-                  fontSize: 17.0,
+                  fontSize: 15.0,
                 ),
               ),
               IconButton(
@@ -131,6 +139,12 @@ class _PostWidgetState extends State<PostWidget> {
                 icon: const Icon(Icons.house),
               ),
             ],
+          ),
+          Text(
+            'Initiator : ${widget.initiator}',
+            style: kSmallTitleTextStyle.copyWith(
+              fontSize: 15.0,
+            ),
           ),
           const Gap(10),
           const Divider(
