@@ -59,7 +59,7 @@ class _HostEventPageState extends State<HostEventPage> {
                 itemCount: posts.length,
                 itemBuilder: (context, index) {
                   return PostWidget(
-                    updateTime: DateTime.now(),
+                    updateTime: PostService.lastUpdate(post: posts[index]),
                     image: posts[index].image,
                     location: posts[index].location,
                     initiator: posts[index].initiator,
@@ -83,7 +83,7 @@ class PostWidget extends StatefulWidget {
     required this.initiator,
   });
 
-  final DateTime updateTime;
+  final String updateTime;
   final Image image;
   final String location;
   final String initiator;
@@ -114,7 +114,7 @@ class _PostWidgetState extends State<PostWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Last update : ${DateTime.now().difference(widget.updateTime).inHours} hr ago',
+                'Last update : ${widget.updateTime} ago',
                 style: kSmallTitleTextStyle.copyWith(
                   fontSize: 17.0,
                 ),
