@@ -25,8 +25,6 @@ class PostService {
           .ref()
           .child('images/${map['id']}.jpg')
           .getDownloadURL();
-      print(map['id']);
-      print(map['location']);
       _posts.add(Post(
         location: map['location'],
         initiator: map['initiator'],
@@ -66,7 +64,6 @@ class PostService {
       print(e);
     }
   }
-
   static String lastUpdate({required Post post}) {
     DateTime now = DateTime.now();
     Duration duration = now.difference(post.lastUpdate);
