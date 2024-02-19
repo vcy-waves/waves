@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:waves/constants.dart';
