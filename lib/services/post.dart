@@ -42,9 +42,9 @@ class PostService {
 
   static Future<void> postPost(
       {required String location,
-        required String initiator,
-        required DateTime lastUpdate,
-        required XFile image}) async {
+      required String initiator,
+      required DateTime lastUpdate,
+      required XFile image}) async {
     int id = 0;
     final int lastUpdateToEpoch = lastUpdate.microsecondsSinceEpoch;
     final File file = File(image.path);
@@ -80,14 +80,39 @@ class PostService {
     DateTime now = DateTime.now();
     Duration duration = now.difference(post.lastUpdate);
 
-    if (duration.compareTo(const Duration(days: 1)) > 0) {
-      return '${duration.inDays} days';
-    } else if (duration.compareTo(const Duration(hours: 1)) > 0) {
-      return '${duration.inHours} hours';
-    } else if (duration.compareTo(const Duration(minutes: 1)) > 0) {
-      return '${duration.inMinutes} minutes';
+    if (duration.compareTo(const Duration(days: 2)) >= 0) {
+      return '${duration.inDays} days ago';
+    } else if (duration.compareTo(const Duration(days: 1)) >= 0) {
+      return '${duration.inDays} day ago';
+    } else if (duration.compareTo(const Duration(hours: 2)) >= 0) {
+      return '${duration.inHours} hours ago';
+    } else if (duration.compareTo(const Duration(hours: 1)) == 0) {
+      return '${duration.inHours} hour ago';
+    } else if (duration.compareTo(const Duration(minutes: 2)) >= 0) {
+      return '${duration.inMinutes} minutes ago';
+    } else if (duration.compareTo(const Duration(minutes: 1)) == 0) {
+      return '${duration.inMinutes} minute ago';
+    } else if (duration.compareTo(const Duration(seconds: 2)) >= 0) {
+      return '${duration.inSeconds} seconds ago';
+    } else if (duration.compareTo(const Duration(seconds: 0)) == 0) {
+      return 'now !';
     } else {
-      return '${duration.inSeconds} seconds';
+      duration = post.lastUpdate.difference(now);
+      if (duration.compareTo(const Duration(days: 2)) >= 0) {
+        return '${duration.inDays} days later';
+      } else if (duration.compareTo(const Duration(days: 1)) == 0) {
+        return '${duration.inDays} day later';
+      } else if (duration.compareTo(const Duration(hours: 2)) >= 0) {
+        return '${duration.inHours} hours later';
+      } else if (duration.compareTo(const Duration(hours: 1)) == 0) {
+        return '${duration.inHours} hour later';
+      } else if (duration.compareTo(const Duration(minutes: 2)) >= 0) {
+        return '${duration.inMinutes} minutes later';
+      } else if (duration.compareTo(const Duration(minutes: 1)) == 0) {
+        return '${duration.inMinutes} minute later';
+      } else {
+        return '${duration.inSeconds} seconds later';
+      }
     }
   }
 }

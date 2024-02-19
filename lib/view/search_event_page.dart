@@ -5,6 +5,7 @@ import 'package:waves/services/post.dart';
 import 'package:lottie/lottie.dart';
 import 'package:waves/test_list.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 class HostEventPage extends StatefulWidget {
   HostEventPage({super.key});
 
@@ -128,7 +129,7 @@ class _PostWidgetState extends State<PostWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Last update : ${widget.updateTime} ago',
+                'Last update : ${widget.updateTime}',
                 style: kSmallTitleTextStyle.copyWith(
                   fontSize: 15.0,
                 ),
