@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:http/http.dart';
 import 'package:waves/constants.dart';
 import 'package:waves/services/post.dart';
+import 'package:waves/test_list.dart';
 
 class HostEventPage extends StatefulWidget {
   HostEventPage({super.key});
@@ -43,7 +45,7 @@ class _HostEventPageState extends State<HostEventPage> {
         children: [
           Visibility(
             visible: isVisible,
-            child: Center(
+            child: const Center(
               child: CircularProgressIndicator(
                 color: Colors.blue,
                 strokeAlign: BorderSide.strokeAlignCenter,
@@ -99,12 +101,12 @@ class _PostWidgetState extends State<PostWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Gap(10),
-          const ListTile(
-            leading: CircleAvatar(
+          ListTile(
+            leading: const CircleAvatar(
               backgroundImage:
                   AssetImage('images/ocean/baishawan/baishawan1.jpg'),
             ),
-            title: Text('location name', style: kSmallTitleTextStyle),
+            title: Text(widget.location, style: kSmallTitleTextStyle),
           ),
           const Gap(10),
           widget.image,
@@ -122,6 +124,12 @@ class _PostWidgetState extends State<PostWidget> {
                 icon: const Icon(Icons.house),
               ),
             ],
+          ),
+          Text(
+            'Initiator : ${widget.initiator}',
+            style: kSmallTitleTextStyle.copyWith(
+              fontSize: 17.0,
+            ),
           ),
           const Gap(10),
           const Divider(
