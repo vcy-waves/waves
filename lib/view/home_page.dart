@@ -8,6 +8,7 @@ import 'package:waves/components/tool_box.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:waves/view/profile_page.dart';
 import 'dart:io' show Platform;
+import 'package:waves/constants.dart';
 import 'package:waves/view/post_event_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,6 +17,7 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
+
 
 class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -34,6 +36,12 @@ class _HomePageState extends State<HomePage> {
     NotificationService.getNotificationOnFirebase(
       flutterLocalNotificationsPlugin,
     );
+    update();
+  }
+
+  Future<void> update() async {
+    await AccountService.fetchAccount();
+    setState(() {});
   }
 
   @override
@@ -135,6 +143,13 @@ class _HomePageState extends State<HomePage> {
                             onTap: () async {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => const PostEventPage()));
+                              // await NotificationService.promoteEvent(
+                              //   notiType: NotiType.fine,
+                              //   initiator: 'chiyu',
+                              //   location: 'location',
+                              //   flutterLocalNotificationsPlugin:
+                              //       flutterLocalNotificationsPlugin,
+                              // );
                             },
                           ),
                         ],
@@ -149,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                             onTap: () async {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => SearchPostPage(),
+                                  builder: (context) => HostEventPage(),
                                 ),
                               );
                             },
@@ -185,3 +200,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+
