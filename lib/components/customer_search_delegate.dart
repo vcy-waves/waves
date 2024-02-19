@@ -10,6 +10,23 @@ class CustomSearchDelegate extends SearchDelegate {
   List<String> searchTerms = [
     'LiuKuaiCuo',
     'Baishawan',
+    'Taipei port',
+    'Bali Sailing Pier',
+    'Shalun Beach',
+    'Cianshuei Bay',
+    'Laomei Green Reef',
+    'Fuji fishing port',
+    'Jump-stone Coast',//跳石
+    'Zhongjiao Bay',//中角灣
+    'Jinshan Beach',//金山
+    'Xialiao Beach',//下寮
+    'Green Bay',//翡翠灣
+    '深澳鐵道自行車',
+    'Bitou Cape',
+    '澳底',
+    'FuLong beach',
+    '最東點',
+
   ];
 
   @override
