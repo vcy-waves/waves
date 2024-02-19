@@ -1,12 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:waves/constants.dart';
 import 'package:waves/components/customer_search_delegate.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:waves/services/post.dart';
 import 'package:waves/services/account.dart';
+import 'package:waves/view/home_page.dart';
 
 class PostEventPage extends StatefulWidget {
   const PostEventPage({super.key});
@@ -21,8 +23,10 @@ class _PostEventPageState extends State<PostEventPage> {
   final _fieldText = TextEditingController();
   String _locationName = '';
   DateTime _selectedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
   TimeOfDay? _time;
-  final FirebaseStorage _storage = FirebaseStorage.instance;
+  Uint8List? _image;
+  XFile? image;
 
   @override
   void initState() {
@@ -45,15 +49,40 @@ class _PostEventPageState extends State<PostEventPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey.shade100,
+        backgroundColor: Colors.blueGrey.shade300,
         title: const Text(
           'Waves',
           style: kSmallTitleTextStyle,
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add_a_photo),
+            onPressed: () async {
+              image = await _picker.pickImage(source: ImageSource.gallery);
+              _image = await image!.readAsBytes();
+              setState(() {});
+            },
+          )
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue.shade300.withOpacity(0.7),
+        onPressed: () async {
+          if (image != null) {
+            await PostService.postPost(
+              location: _locationName,
+              initiator: AccountService.account['email'],
+              lastUpdate: _selectedDay,
+              image: image!,
+            );
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const HomePage()));
+          }
+        },
+        child: const Icon(Icons.send),
       ),
       body: Column(
         children: [
-
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -67,13 +96,17 @@ class _PostEventPageState extends State<PostEventPage> {
           ),
           TableCalendar(
             calendarFormat: CalendarFormat.twoWeeks,
-            focusedDay: DateTime.now(),
             currentDay: _selectedDay,
+            focusedDay: _focusedDay,
             firstDay: DateTime(2023),
             lastDay: DateTime(2025),
-            onDaySelected: (selectDay, anotherDay) {
+            selectedDayPredicate: (day) {
+              return isSameDay(_selectedDay, day);
+            },
+            onDaySelected: (selectedDay, focusedDay) {
               setState(() {
-                _selectedDay = selectDay;
+                _selectedDay = selectedDay;
+                _focusedDay = focusedDay;
               });
             },
           ),
@@ -86,28 +119,21 @@ class _PostEventPageState extends State<PostEventPage> {
               );
               setState(() {});
             },
-            child: const Text(
+            child: Text(
               'Pick up a time to clean up',
-              style: kSmallTitleTextStyle,
+              style: kSmallTitleTextStyle.copyWith(color: Colors.blue),
             ),
           ),
-
-          TextButton(
-            onPressed: () async {
-              XFile? image =
-                  await _picker.pickImage(source: ImageSource.camera);
-              if (image != null)
-                PostService.postPost(
-                    location: _locationName,
-                    initiator: AccountService.account['email'],
-                    lastUpdate: _selectedDay,
-                    image: image);
-            },
-            child: const Text(
-              'Upload Current Image',
-              style: kSmallTitleTextStyle,
-            ),
-          ),
+          _time != null
+              ? Text(
+                  '${_time!.hour} : ${_time!.minute}',
+                  style: kSmallTitleTextStyle,
+                )
+              : const SizedBox(),
+          const Gap(30.0),
+          _image != null
+              ? Expanded(child: Image.memory(_image!))
+              : const SizedBox(),
           const MaxGap(1),
         ],
       ),

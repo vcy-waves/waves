@@ -628,9 +628,6 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
-  - AppCheckCore (10.18.1):
-    - GoogleUtilities/Environment (~> 7.11)
-    - PromisesObjC (~> 2.3)
   - BoringSSL-GRPC (0.0.24):
     - BoringSSL-GRPC/Implementation (= 0.0.24)
     - BoringSSL-GRPC/Interface (= 0.0.24)
@@ -653,11 +650,6 @@ PODS:
   - Firebase/Storage (10.20.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 10.20.0)
-  - firebase_app_check (0.2.1-13):
-    - Firebase/CoreOnly (~> 10.20.0)
-    - firebase_core
-    - FirebaseAppCheck (~> 10.20.0-beta)
-    - Flutter
   - firebase_auth (4.17.0):
     - Firebase/Auth (= 10.20.0)
     - firebase_core
@@ -669,12 +661,6 @@ PODS:
     - Firebase/Storage (= 10.20.0)
     - firebase_core
     - Flutter
-  - FirebaseAppCheck (10.20.0):
-    - AppCheckCore (~> 10.18)
-    - FirebaseAppCheckInterop (~> 10.17)
-    - FirebaseCore (~> 10.0)
-    - GoogleUtilities/Environment (~> 7.8)
-    - PromisesObjC (~> 2.1)
   - FirebaseAppCheckInterop (10.20.0)
   - FirebaseAuth (10.20.0):
     - FirebaseAppCheckInterop (~> 10.17)
@@ -830,7 +816,6 @@ PODS:
 
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
-  - firebase_app_check (from `.symlinks/plugins/firebase_app_check/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
@@ -847,10 +832,8 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - abseil
-    - AppCheckCore
     - BoringSSL-GRPC
     - Firebase
-    - FirebaseAppCheck
     - FirebaseAppCheckInterop
     - FirebaseAuth
     - FirebaseAuthInterop
@@ -874,8 +857,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
-  firebase_app_check:
-    :path: ".symlinks/plugins/firebase_app_check/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -903,15 +884,12 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   abseil: 926fb7a82dc6d2b8e1f2ed7f3a718bce691d1e46
-  AppCheckCore: d0d4bcb6f90fd9f69958da5350467b79026b38c7
   BoringSSL-GRPC: 3175b25143e648463a56daeaaa499c6cb86dad33
   cloud_firestore: cd4875ae7408bc6ea2ac024d9540b72e19e3ca0c
   Firebase: 10c8cb12fb7ad2ae0c09ffc86cd9c1ab392a0031
-  firebase_app_check: 712830093ac727bbfbd5220e39925bdc7f952d3b
   firebase_auth: f54b22ea1a37d039f405708289917ea29d972915
   firebase_core: a46c312d8bae4defa3d009b2aa7b5b413aeb394e
   firebase_storage: 5007be227e54a46f260b6040a23b4fdc8ca1c5c5
-  FirebaseAppCheck: 401b26f036fcbe0ffe40bdc1c831ab05955c1b9f
   FirebaseAppCheckInterop: e81bdb1cdb82f8e0cef353ba5018a8402682032c
   FirebaseAuth: 9c5c400d2c3055d8ae3a0284944c86fa95d48dac
   FirebaseAuthInterop: 6142981334978f7942ff0e8a6f8966c3b3c8ff37

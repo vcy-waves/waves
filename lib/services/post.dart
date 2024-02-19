@@ -45,11 +45,11 @@ class PostService {
     int id = 0;
     final int lastUpdateToEpoch = lastUpdate.microsecondsSinceEpoch;
     final File file = File(image.path);
-    var counter = await _firestore.collection('posts').doc('count').get();
+    var counter = await _firestore.collection('counter').doc('counter').get();
     var count = counter.data();
     if (count != null) {
-      id = count['count'];
-      id = id + 1;
+      int postCounter = count['post_counter'];
+      id = postCounter + 1;
     }
     _firestore.collection('posts').doc('$id').set({
       'id': id,
@@ -58,7 +58,7 @@ class PostService {
       'lastUpdate': lastUpdateToEpoch,
     });
     _firestore.collection('counter').doc('counter').update({
-      'count': id,
+      'post_counter': id,
     });
     try {
       await _storage.ref('images/$id.jpg').putFile(file);
