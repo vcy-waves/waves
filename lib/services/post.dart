@@ -25,6 +25,7 @@ class PostService {
     final sourceFromDatabase = await _firestore.collection('posts').get();
     for (var post in sourceFromDatabase.docs) {
       var map = post.data();
+
       String? url = await _storage
           .ref()
           .child('images/${map['id']}.jpg')
@@ -41,9 +42,9 @@ class PostService {
 
   static Future<void> postPost(
       {required String location,
-      required String initiator,
-      required DateTime lastUpdate,
-      required XFile image}) async {
+        required String initiator,
+        required DateTime lastUpdate,
+        required XFile image}) async {
     int id = 0;
     final int lastUpdateToEpoch = lastUpdate.microsecondsSinceEpoch;
     final File file = File(image.path);
