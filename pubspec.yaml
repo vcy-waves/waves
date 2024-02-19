@@ -36,6 +36,7 @@ dependencies:
   firebase_storage: ^11.6.5
   image_picker: ^1.0.7
   flutter_background_service: ^5.0.5
+  lottie: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +53,7 @@ flutter:
     - images/app_icon/
     - images/ocean/
     - images/ocean/baishawan/
+    - assets/animations/
 
   fonts:
     - family: Playpen_Sans

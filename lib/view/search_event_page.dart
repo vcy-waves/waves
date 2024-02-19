@@ -1,8 +1,8 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:waves/constants.dart';
 import 'package:waves/services/post.dart';
+import 'package:lottie/lottie.dart';
 
 class HostEventPage extends StatefulWidget {
   HostEventPage({super.key});
@@ -11,21 +11,23 @@ class HostEventPage extends StatefulWidget {
   State<HostEventPage> createState() => _HostEventPageState();
 }
 
-class _HostEventPageState extends State<HostEventPage> {
+class _HostEventPageState extends State<HostEventPage>
+    with TickerProviderStateMixin {
   List posts = [];
   final DateTime updateTime = DateTime(2024, 2, 13, 9, 10);
   bool isVisible = true;
+  late final AnimationController _animationController;
 
   Future<void> updatePost() async {
     await PostService.fetchPosts();
     posts = PostService.post;
-    isVisible = false;
     setState(() {});
   }
 
   @override
   void initState() {
     // TODO: implement initState
+    _animationController = AnimationController(vsync: this);
     updatePost();
   }
 
@@ -42,14 +44,21 @@ class _HostEventPageState extends State<HostEventPage> {
       body: Column(
         children: [
           Visibility(
-            visible: isVisible,
-            child: Center(
-              child: CircularProgressIndicator(
-                color: Colors.blue,
-                strokeAlign: BorderSide.strokeAlignCenter,
-              ),
-            ),
-          ),
+              visible: isVisible,
+              child: Center(
+                child: Lottie.asset(
+                  'assets/animations/Animation - 1708312765373.json',
+                  controller: _animationController,
+                  onLoaded: (composition) {
+                    _animationController.duration = composition.duration;
+                    _animationController.forward().then((value) {
+                      _animationController.stop();
+                      isVisible = false;
+                      setState(() {});
+                    });
+                  },
+                ),
+              )),
           Visibility(
             visible: !isVisible,
             child: Expanded(
