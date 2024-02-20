@@ -104,7 +104,6 @@ class NotificationService {
       'location': noti.location,
     }).then((value) =>
         _firestore.collection('notification').doc('channel').delete());
-    // });
   }
 
   static Future initial(
@@ -130,6 +129,7 @@ class NotificationService {
       importance: Importance.max,
       playSound: true,
       priority: Priority.max,
+      fullScreenIntent: true
     );
     NotificationDetails notificationDetails = const NotificationDetails(
       iOS: DarwinNotificationDetails(),

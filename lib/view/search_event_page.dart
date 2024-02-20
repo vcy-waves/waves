@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:waves/constants.dart';
 import 'package:waves/model/post.dart';
 import 'package:waves/services/post.dart';
 import 'package:lottie/lottie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gap/gap.dart';
 
 class HostEventPage extends StatefulWidget {
-  HostEventPage({super.key});
+  const HostEventPage({super.key});
 
   @override
   State<HostEventPage> createState() => _HostEventPageState();
@@ -15,19 +15,19 @@ class HostEventPage extends StatefulWidget {
 
 class _HostEventPageState extends State<HostEventPage>
     with TickerProviderStateMixin {
-  List posts = [];
+  List<Post> posts = [];
   final DateTime updateTime = DateTime(2024, 2, 13, 9, 10);
   bool isVisible = true;
   late final AnimationController _animationController;
 
   Future<void> updatePost() async {
-    await PostService.fetchPosts();
-    posts = PostService.post;
+    posts = await PostService.post;
     setState(() {});
   }
 
   @override
   void initState() {
+    super.initState();
     // TODO: implement initState
     _animationController = AnimationController(vsync: this);
     updatePost();
@@ -42,6 +42,12 @@ class _HostEventPageState extends State<HostEventPage>
           'Waves',
           style: kSmallTitleTextStyle,
         ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.waves_rounded),
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -69,7 +75,7 @@ class _HostEventPageState extends State<HostEventPage>
                 itemBuilder: (context, index) {
                   return PostWidget(
                     updateTime: PostService.lastUpdate(post: posts[index]),
-                    image: posts[index].image,
+                    image: posts[index].image!,
                     location: posts[index].location,
                     initiator: posts[index].initiator,
                     id: posts[index].id,

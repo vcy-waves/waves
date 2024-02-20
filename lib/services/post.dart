@@ -14,16 +14,20 @@ import 'package:waves/services/account.dart';
 class PostService {
   static final _firestore = FirebaseFirestore.instance;
   static final _storage = FirebaseStorage.instance;
-  static final List<dynamic> _posts = [];
+  static List<Post> _posts = [];
   static final List<dynamic> _images = [];
 
-  static List<dynamic> get post => _posts;
+  static Future<List<Post>> get post async {
+    await _fetchPosts();
+    _posts = sortingPost(posts: _posts);
+    return _posts;
+  }
 
   static List<dynamic> get image => _images;
   static final flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  static Future<void> fetchPosts() async {
+  static Future<void> _fetchPosts() async {
     await _firestore.collection('counter').doc('counter').get();
     final sourceFromDatabase = await _firestore.collection('posts').get();
     for (var post in sourceFromDatabase.docs) {
@@ -62,7 +66,16 @@ class PostService {
         return true;
       }
     }
-    return false;
+    return false;}
+
+  static NotiType _determineNotiType({required int rating}) {
+    if (rating <= 2) {
+      return NotiType.immediate;
+    } else if (rating <= 3) {
+      return NotiType.normal;
+    } else {
+      return NotiType.fine;
+    }
   }
 
   static Future<void> postPost({
@@ -72,6 +85,7 @@ class PostService {
     required XFile image,
     required int likes,
     required String email,
+    required int rating,
   }) async {
     int id = 0;
     final int lastUpdateToEpoch = lastUpdate.microsecondsSinceEpoch;
@@ -99,7 +113,7 @@ class PostService {
       print(e);
     }
     await NotificationService.promoteEvent(
-      notiType: NotiType.fine,
+      notiType: _determineNotiType(rating: rating),
       initiator: initiator,
       location: location,
       flutterLocalNotificationsPlugin: flutterLocalNotificationsPlugin,
@@ -174,5 +188,21 @@ class PostService {
         'likes': likes - 1,
       });
     }
+  }
+
+  static sortingPost({required List<Post> posts}) {
+    for (int i = 0; i < posts.length; i++) {
+      for (int j = 0; j < posts.length - 1; j++) {
+        if (posts[j].lastUpdate.compareTo(posts[j + 1].lastUpdate) < 0) {
+          Post post = posts[j];
+          posts[j] = posts[j + 1];
+          posts[j + 1] = post;
+        }
+      }
+    }
+    for (Post post in posts) {
+      print(post.lastUpdate);
+    }
+    return posts;
   }
 }
