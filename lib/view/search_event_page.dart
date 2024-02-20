@@ -146,6 +146,7 @@ class _PostWidgetState extends State<PostWidget> {
                     PostService.updateLike(
                       post: widget.post,
                       isLiked: widget.like,
+                      index: widget.id,
                     );
                     setState(() {});
                   });

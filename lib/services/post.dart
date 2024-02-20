@@ -35,8 +35,8 @@ class PostService {
           .getDownloadURL();
 
       List<dynamic> likers = map['likers'];
-      List<String>likersToString = [];
-      for(String liker in likers){
+      List<String> likersToString = [];
+      for (String liker in likers) {
         likersToString.add(liker.toString());
       }
 
@@ -110,25 +110,56 @@ class PostService {
     DateTime now = DateTime.now();
     Duration duration = now.difference(post.lastUpdate);
 
-    if (duration.compareTo(const Duration(days: 1)) > 0) {
-      return '${duration.inDays} days';
-    } else if (duration.compareTo(const Duration(hours: 1)) > 0) {
-      return '${duration.inHours} hours';
-    } else if (duration.compareTo(const Duration(minutes: 1)) > 0) {
-      return '${duration.inMinutes} minutes';
+    if (duration.compareTo(const Duration(days: 2)) >= 0) {
+      return '${duration.inDays} days ago';
+    } else if (duration.compareTo(const Duration(days: 1)) >= 0) {
+      return '${duration.inDays} day ago';
+    } else if (duration.compareTo(const Duration(hours: 2)) >= 0) {
+      return '${duration.inHours} hours ago';
+    } else if (duration.compareTo(const Duration(hours: 1)) == 0) {
+      return '${duration.inHours} hour ago';
+    } else if (duration.compareTo(const Duration(minutes: 2)) >= 0) {
+      return '${duration.inMinutes} minutes ago';
+    } else if (duration.compareTo(const Duration(minutes: 1)) == 0) {
+      return '${duration.inMinutes} minute ago';
+    } else if (duration.compareTo(const Duration(seconds: 2)) >= 0) {
+      return '${duration.inSeconds} seconds ago';
+    } else if (duration.compareTo(const Duration(seconds: 0)) == 0) {
+      return 'now !';
     } else {
-      return '${duration.inSeconds} seconds';
+      duration = post.lastUpdate.difference(now);
+      if (duration.compareTo(const Duration(days: 2)) >= 0) {
+        return '${duration.inDays} days later';
+      } else if (duration.compareTo(const Duration(days: 1)) == 0) {
+        return '${duration.inDays} day later';
+      } else if (duration.compareTo(const Duration(hours: 2)) >= 0) {
+        return '${duration.inHours} hours later';
+      } else if (duration.compareTo(const Duration(hours: 1)) == 0) {
+        return '${duration.inHours} hour later';
+      } else if (duration.compareTo(const Duration(minutes: 2)) >= 0) {
+        return '${duration.inMinutes} minutes later';
+      } else if (duration.compareTo(const Duration(minutes: 1)) == 0) {
+        return '${duration.inMinutes} minute later';
+      } else {
+        return '${duration.inSeconds} seconds later';
+      }
     }
   }
 
   static Future<void> updateLike({
     required Post post,
     required isLiked,
+    required index
   }) async {
     //1.state的轉換
     //2.likes -1 && likers 少一筆資料
+    int likes = 0;
+    var datas = await _firestore.collection('posts').doc('$index').get();
+    var data = datas.data();
+    if(data != null){
+      likes = data['likes'];
+    }
     List<String> likers = post.likers;
-    int likes = post.likes;
     String email = AccountService.account['email'];
     if (isLiked) {
       likers.add(email);
@@ -136,13 +167,12 @@ class PostService {
         'likers': likers,
         'likes': likes + 1,
       });
-    }else{
+    } else {
       likers.remove(email);
       _firestore.collection('posts').doc('${post.id}').update({
         'likers': likers,
         'likes': likes - 1,
       });
-
     }
   }
 }
