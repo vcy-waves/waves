@@ -1,31 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:waves/constants.dart';
+import 'package:waves/components/post.dart';
 import 'package:waves/services/post.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
+import 'package:waves/model/post.dart';
 
 class HostEventPage extends StatefulWidget {
-  HostEventPage({super.key});
+  const HostEventPage({super.key});
 
   @override
   State<HostEventPage> createState() => _HostEventPageState();
 }
 
-class _HostEventPageState extends State<HostEventPage> {
-  List posts = [];
+class _HostEventPageState extends State<HostEventPage>
+    with TickerProviderStateMixin {
+  List<Post> posts = [];
   final DateTime updateTime = DateTime(2024, 2, 13, 9, 10);
   bool isVisible = true;
+  late final AnimationController _animationController;
 
   Future<void> updatePost() async {
-    await PostService.fetchPosts();
-    posts = PostService.post;
-    isVisible = false;
+    posts = await PostService.post;
     setState(() {});
   }
 
   @override
   void initState() {
+    super.initState();
     // TODO: implement initState
+    _animationController = AnimationController(vsync: this);
     updatePost();
   }
 
@@ -38,18 +41,31 @@ class _HostEventPageState extends State<HostEventPage> {
           'Waves',
           style: kSmallTitleTextStyle,
         ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.waves_rounded),
+          ),
+        ],
       ),
       body: Column(
         children: [
           Visibility(
-            visible: isVisible,
-            child: const Center(
-              child: CircularProgressIndicator(
-                color: Colors.blue,
-                strokeAlign: BorderSide.strokeAlignCenter,
-              ),
-            ),
-          ),
+              visible: isVisible,
+              child: Center(
+                child: Lottie.asset(
+                  'assets/animations/Animation - 1708312765373.json',
+                  controller: _animationController,
+                  onLoaded: (composition) {
+                    _animationController.duration = composition.duration;
+                    _animationController.forward().then((value) {
+                      _animationController.stop();
+                      isVisible = false;
+                      setState(() {});
+                    });
+                  },
+                ),
+              )),
           Visibility(
             visible: !isVisible,
             child: Expanded(
@@ -58,91 +74,13 @@ class _HostEventPageState extends State<HostEventPage> {
                 itemBuilder: (context, index) {
                   return PostWidget(
                     updateTime: PostService.lastUpdate(post: posts[index]),
-                    image: posts[index].image,
+                    image: posts[index].image!,
                     location: posts[index].location,
                     initiator: posts[index].initiator,
                   );
                 },
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class PostWidget extends StatefulWidget {
-  PostWidget({
-    super.key,
-    required this.updateTime,
-    required this.image,
-    required this.location,
-    required this.initiator,
-  });
-
-  bool like = false;
-  final String updateTime;
-  final Image image;
-  final String location;
-  final String initiator;
-
-  @override
-  State<PostWidget> createState() => _PostWidgetState();
-}
-
-class _PostWidgetState extends State<PostWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Gap(10),
-          ListTile(
-            leading: const CircleAvatar(
-              backgroundImage: AssetImage('images/ocean/cover_7.JPG'),
-            ),
-            title: Text(widget.location, style: kSmallTitleTextStyle),
-          ),
-          const Gap(10),
-          widget.image,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Last update : ${widget.updateTime} ago',
-                style: kSmallTitleTextStyle.copyWith(
-                  fontSize: 17.0,
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    widget.like = !widget.like;
-                  });
-                },
-                icon: widget.like
-                    ? const FaIcon(
-                        FontAwesomeIcons.solidHeart,
-                        color: Color(0xFFF28585),
-                      )
-                    : const FaIcon(
-                        FontAwesomeIcons.heart,
-                      ),
-              ),
-            ],
-          ),
-          Text(
-            'Initiator : ${widget.initiator}',
-            style: kSmallTitleTextStyle.copyWith(
-              fontSize: 17.0,
-            ),
-          ),
-          const Gap(10),
-          const Divider(
-            height: 0.1,
           ),
         ],
       ),
