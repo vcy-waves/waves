@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:waves/constants.dart';
@@ -69,7 +70,6 @@ class _PostEventPageState extends State<PostEventPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue.shade300.withOpacity(0.7),
         onPressed: () async {
-          // if (image != null) {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
