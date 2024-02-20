@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:waves/constants.dart';
@@ -7,6 +8,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:waves/services/post.dart';
 import 'package:waves/services/account.dart';
+import 'package:waves/components/rating_bar.dart';
 import 'package:waves/view/home_page.dart';
 
 class PostEventPage extends StatefulWidget {
@@ -26,6 +28,7 @@ class _PostEventPageState extends State<PostEventPage> {
   TimeOfDay? _time;
   Uint8List? _image;
   XFile? image;
+  int rating = 0;
 
   @override
   void initState() {
@@ -67,16 +70,44 @@ class _PostEventPageState extends State<PostEventPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue.shade300.withOpacity(0.7),
         onPressed: () async {
-          if (image != null) {
-            await PostService.postPost(
-              location: _locationName,
-              initiator: AccountService.account['name'],
-              lastUpdate: _selectedDay,
-              image: image!,
-            );
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const HomePage()));
-          }
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text(
+                'Rate This Ocean now ! !',
+                style: kSmallTitleTextStyle,
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    if (rating != 0) {
+                      await PostService.postPost(
+                        location: _locationName,
+                        initiator: AccountService.account['name'],
+                        lastUpdate: _selectedDay,
+                        image: image!,
+                        rating: rating,
+                      );
+                    }
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const HomePage()));
+                  },
+                  child: const Text('Post'),
+                ),
+              ],
+              content: RatingBar(
+                update: (value) {
+                  rating = value;
+                },
+              ),
+            ),
+          );
         },
         child: const Icon(Icons.send),
       ),
@@ -139,4 +170,3 @@ class _PostEventPageState extends State<PostEventPage> {
     );
   }
 }
-
