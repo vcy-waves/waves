@@ -8,8 +8,25 @@ class CustomSearchDelegate extends SearchDelegate {
   Function queryLocation;
 
   List<String> searchTerms = [
-    'LiuKuaiCuo',
-    'Baishawan',
+    '六塊厝',
+    '白沙灣',
+    '台北港',
+    '八里風帆碼頭',
+    '沙崙海水浴場',
+    '淺水灣',
+    '老梅綠石槽',
+    '富基漁港',
+    '跳石海岸',//跳石
+    '中角灣',//中角灣
+    '金山海濱公園',//金山
+    '下寮海灘',//下寮
+    '翡翠灣',//翡翠灣
+    '深澳鐵道自行車',
+    '鼻頭角',
+    '澳底',
+    '福隆海水浴場',
+    '最東點',
+
   ];
 
   @override

@@ -1,8 +1,10 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:waves/constants.dart';
+import 'package:waves/model/post.dart';
 import 'package:waves/services/post.dart';
+import 'package:lottie/lottie.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HostEventPage extends StatefulWidget {
   HostEventPage({super.key});
@@ -11,15 +13,24 @@ class HostEventPage extends StatefulWidget {
   State<HostEventPage> createState() => _HostEventPageState();
 }
 
-class _HostEventPageState extends State<HostEventPage> {
+class _HostEventPageState extends State<HostEventPage>
+    with TickerProviderStateMixin {
   List posts = [];
   final DateTime updateTime = DateTime(2024, 2, 13, 9, 10);
+  bool isVisible = true;
+  late final AnimationController _animationController;
+
+  Future<void> updatePost() async {
+    await PostService.fetchPosts();
+    posts = PostService.post;
+    setState(() {});
+  }
 
   @override
   void initState() {
     // TODO: implement initState
-    PostService.fetchPosts();
-    posts = PostService.post;
+    _animationController = AnimationController(vsync: this);
+    updatePost();
   }
 
   @override
@@ -32,34 +43,65 @@ class _HostEventPageState extends State<HostEventPage> {
           style: kSmallTitleTextStyle,
         ),
       ),
-      body: ListView.builder(
-        itemCount: posts.length,
-        itemBuilder: (context, index) {
-          return PostWidget(
-            updateTime: DateTime.now(),
-            image: posts[index].image,
-            location: posts[index].location,
-            initiator: posts[index].initiator,
-          );
-        },
+      body: Column(
+        children: [
+          Visibility(
+              visible: isVisible,
+              child: Center(
+                child: Lottie.asset(
+                  'assets/animations/Animation - 1708312765373.json',
+                  controller: _animationController,
+                  onLoaded: (composition) {
+                    _animationController.duration = composition.duration;
+                    _animationController.forward().then((value) {
+                      _animationController.stop();
+                      isVisible = false;
+                      setState(() {});
+                    });
+                  },
+                ),
+              )),
+          Visibility(
+            visible: !isVisible,
+            child: Expanded(
+              child: ListView.builder(
+                itemCount: posts.length,
+                itemBuilder: (context, index) {
+                  return PostWidget(
+                    updateTime: PostService.lastUpdate(post: posts[index]),
+                    image: posts[index].image,
+                    location: posts[index].location,
+                    initiator: posts[index].initiator,
+                    id: posts[index].id,
+                    like: PostService.fetchIsLiked(index),post: posts[index],
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
 class PostWidget extends StatefulWidget {
-  const PostWidget({
-    super.key,
-    required this.updateTime,
-    required this.image,
-    required this.location,
-    required this.initiator,
-  });
+  PostWidget(
+      {super.key,
+      required this.updateTime,
+      required this.image,
+      required this.location,
+      required this.initiator,
+      required this.id,
+      required this.like, required this.post});
 
-  final DateTime updateTime;
+  bool like;
+  final String updateTime;
   final Image image;
   final String location;
   final String initiator;
+  final int id;
+  final Post post;
 
   @override
   State<PostWidget> createState() => _PostWidgetState();
@@ -74,12 +116,17 @@ class _PostWidgetState extends State<PostWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Gap(10),
-          const ListTile(
-            leading: CircleAvatar(
-              backgroundImage:
-                  AssetImage('images/ocean/baishawan/baishawan1.jpg'),
+          ListTile(
+            leading: const CircleAvatar(
+              backgroundImage: AssetImage('images/ocean/cover_7.JPG'),
             ),
-            title: Text('location name', style: kSmallTitleTextStyle),
+            title: Text(
+              widget.post.location,
+              style: kSmallTitleTextStyle.copyWith(
+                  fontFamily: 'ChenYuLuoYan',
+                  fontSize: 23,
+                  fontWeight: FontWeight.w600),
+            ),
           ),
           const Gap(10),
           widget.image,
@@ -87,16 +134,38 @@ class _PostWidgetState extends State<PostWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Last update : ${DateTime.now().difference(widget.updateTime).inHours} hr ago',
+                'Last update : ${widget.updateTime} ago',
                 style: kSmallTitleTextStyle.copyWith(
-                  fontSize: 17.0,
+                  fontSize: 15.0,
                 ),
               ),
               IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.house),
+                onPressed: () {
+                  setState(() {
+                    widget.like = !widget.like;
+                    PostService.updateLike(
+                      post: widget.post,
+                      isLiked: widget.like,
+                    );
+                    setState(() {});
+                  });
+                },
+                icon: widget.like
+                    ? const FaIcon(
+                        FontAwesomeIcons.solidHeart,
+                        color: Color(0xFFF28585),
+                      )
+                    : const FaIcon(
+                        FontAwesomeIcons.heart,
+                      ),
               ),
             ],
+          ),
+          Text(
+            'Initiator : ${widget.initiator}',
+            style: kSmallTitleTextStyle.copyWith(
+              fontSize: 15.0,
+            ),
           ),
           const Gap(10),
           const Divider(

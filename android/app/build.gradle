@@ -25,7 +25,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.ntue.waves"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -71,4 +71,5 @@ flutter {
 
 dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
+    implementation 'com.google.firebase:firebase-appcheck-safetynet:16.0.0'
 }
