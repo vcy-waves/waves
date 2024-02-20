@@ -3,11 +3,10 @@ import 'package:gap/gap.dart';
 import 'package:waves/constants.dart';
 import 'package:waves/services/post.dart';
 import 'package:lottie/lottie.dart';
-import 'package:waves/test_list.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HostEventPage extends StatefulWidget {
-  HostEventPage({super.key});
+  const HostEventPage({super.key});
 
   @override
   State<HostEventPage> createState() => _HostEventPageState();
