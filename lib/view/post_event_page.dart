@@ -77,23 +77,37 @@ class _PostEventPageState extends State<PostEventPage> {
                 'Rate This Ocean now ! !',
                 style: kSmallTitleTextStyle,
               ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    if (rating != 0) {
+                      await PostService.postPost(
+                        location: _locationName,
+                        initiator: AccountService.account['name'],
+                        lastUpdate: _selectedDay,
+                        image: image!,
+                        rating: rating,
+                      );
+                    }
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const HomePage()));
+                  },
+                  child: const Text('Post'),
+                ),
+              ],
               content: RatingBar(
-                update: (value){
+                update: (value) {
                   rating = value;
-                  print(rating);
                 },
               ),
             ),
           );
-          //   await PostService.postPost(
-          //     location: _locationName,
-          //     initiator: AccountService.account['name'],
-          //     lastUpdate: _selectedDay,
-          //     image: image!,
-          //   );
-          //   Navigator.of(context).push(
-          //       MaterialPageRoute(builder: (context) => const HomePage()));
-          // }
         },
         child: const Icon(Icons.send),
       ),

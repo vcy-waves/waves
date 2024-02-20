@@ -18,7 +18,7 @@ class PostService {
 
   static List<dynamic> get image => _images;
   static final flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin();
 
   static Future<void> fetchPosts() async {
     await _firestore.collection('counter').doc('counter').get();
@@ -40,11 +40,25 @@ class PostService {
     }
   }
 
-  static Future<void> postPost(
-      {required String location,
-      required String initiator,
-      required DateTime lastUpdate,
-      required XFile image}) async {
+  static NotiType _determineNotiType({required int rating}) {
+    if (rating <= 2 ) {
+      return NotiType.immediate;
+    }
+    else if (rating <= 3) {
+      return NotiType.normal;
+    }
+    else {
+      return NotiType.fine;
+    }
+  }
+
+  static Future<void> postPost({
+    required String location,
+    required String initiator,
+    required DateTime lastUpdate,
+    required XFile image,
+    required int rating,
+  }) async {
     int id = 0;
     final int lastUpdateToEpoch = lastUpdate.microsecondsSinceEpoch;
     final File file = File(image.path);
@@ -69,7 +83,7 @@ class PostService {
       print(e);
     }
     await NotificationService.promoteEvent(
-      notiType: NotiType.fine,
+      notiType: _determineNotiType(rating: rating),
       initiator: initiator,
       location: location,
       flutterLocalNotificationsPlugin: flutterLocalNotificationsPlugin,
