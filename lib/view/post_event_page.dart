@@ -28,6 +28,7 @@ class _PostEventPageState extends State<PostEventPage> {
   TimeOfDay? _time;
   Uint8List? _image;
   XFile? image;
+  int likes = 0;
   int rating = 0;
 
   @override
@@ -70,6 +71,19 @@ class _PostEventPageState extends State<PostEventPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue.shade300.withOpacity(0.7),
         onPressed: () async {
+          if (image != null) {
+            await PostService.postPost(
+              location: _locationName,
+              initiator: AccountService.account['name'],
+              lastUpdate: _selectedDay,
+              image: image!,
+              likes: likes,
+              email: AccountService.account['email'],
+              rating: rating,
+            );
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const HomePage()));
+          }
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -88,6 +102,8 @@ class _PostEventPageState extends State<PostEventPage> {
                   onPressed: () async {
                     if (rating != 0) {
                       await PostService.postPost(
+                        email: AccountService.account['email'],
+                        likes: likes,
                         location: _locationName,
                         initiator: AccountService.account['name'],
                         lastUpdate: _selectedDay,

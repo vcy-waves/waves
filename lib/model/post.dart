@@ -8,6 +8,9 @@ class Post {
   Image? image;
   final String initiator;
   final int id;
+  int likes;
+  bool isLiked;
+  List<String> likers;
 
   Post({
     required this.location,
@@ -15,6 +18,8 @@ class Post {
     required this.lastUpdate,
     this.image,
     required this.id,
+    required this.likes,
+    required this.isLiked,
+    required this.likers,
   });
 }
-
