@@ -9,6 +9,9 @@ class Post {
   final String initiator;
   bool like;
   final int id;
+  int likes;
+  bool isLiked;
+  List<String> likers;
 
   Post({
     required this.location,
@@ -17,6 +20,8 @@ class Post {
     this.image,
     this.like = false,
     required this.id,
+    required this.likes,
+    required this.isLiked,
+    required this.likers,
   });
 }
-
