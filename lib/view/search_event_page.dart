@@ -16,7 +16,6 @@ class HostEventPage extends StatefulWidget {
 class _HostEventPageState extends State<HostEventPage>
     with TickerProviderStateMixin {
   List<Post> posts = [];
-  final DateTime updateTime = DateTime(2024, 2, 13, 9, 10);
   bool isVisible = true;
   late final AnimationController _animationController;
 
@@ -74,6 +73,7 @@ class _HostEventPageState extends State<HostEventPage>
                 itemCount: posts.length,
                 itemBuilder: (context, index) {
                   return PostWidget(
+                    post: posts[index],
                     updateTime: PostService.lastUpdate(post: posts[index]),
                     image: posts[index].image!,
                     location: posts[index].location,

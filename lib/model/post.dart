@@ -7,6 +7,7 @@ class Post {
   final DateTime lastUpdate;
   Image? image;
   final String initiator;
+  bool like;
   final int id;
   int likes;
   bool isLiked;
@@ -17,6 +18,7 @@ class Post {
     required this.initiator,
     required this.lastUpdate,
     this.image,
+    this.like = false,
     required this.id,
     required this.likes,
     required this.isLiked,
