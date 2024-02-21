@@ -20,6 +20,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   String address = '';
   bool broadcasting = false;
   int id = 0;
+  int cleanUpTimes = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -164,6 +165,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 'address': address,
                                 'broadcasting': broadcasting,
                                 'id':id+1,
+                                'cleanUpTimes': cleanUpTimes,
                               });
                               Navigator.push(
                                   context,

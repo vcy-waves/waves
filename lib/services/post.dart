@@ -30,6 +30,7 @@ class PostService {
   static Future<void> _fetchPosts() async {
     await _firestore.collection('counter').doc('counter').get();
     final sourceFromDatabase = await _firestore.collection('posts').get();
+    _posts = [];
     for (var post in sourceFromDatabase.docs) {
       var map = post.data();
 
@@ -45,16 +46,16 @@ class PostService {
       }
 
       print('aaaaaaaaaaaaaaaaaaa');
-
       _posts.add(Post(
         location: map['location'],
         initiator: map['initiator'],
         lastUpdate: DateTime.fromMicrosecondsSinceEpoch(map['lastUpdate']),
         id: map['id'],
-        image: Image.network(url),
+        image: Image.network(url)!,
         likes: map['likes'],
         likers: likersToString,
         isLiked: false,
+        comment: map['comment'],
       ));
     }
   }
@@ -66,7 +67,8 @@ class PostService {
         return true;
       }
     }
-    return false;}
+    return false;
+  }
 
   static NotiType _determineNotiType({required int rating}) {
     if (rating <= 2) {
@@ -86,6 +88,7 @@ class PostService {
     required int likes,
     required String email,
     required int rating,
+    required String comment,
   }) async {
     int id = 0;
     final int lastUpdateToEpoch = lastUpdate.microsecondsSinceEpoch;
@@ -103,6 +106,7 @@ class PostService {
       'lastUpdate': lastUpdateToEpoch,
       'likes': likes,
       'likers': <String>[''],
+      'comment': comment,
     });
     _firestore.collection('counter').doc('counter').update({
       'post_counter': id,
@@ -160,37 +164,52 @@ class PostService {
     }
   }
 
-  static Future<void> updateLike({
-    required Post post,
-    required isLiked,
-    required index
-  }) async {
+  static Future<Post> updateLike(
+      {required Post post, required isLiked, required index}) async {
     //1.state的轉換
     //2.likes -1 && likers 少一筆資料
     int likes = 0;
     var datas = await _firestore.collection('posts').doc('$index').get();
     var data = datas.data();
-    if(data != null){
+    if (data != null) {
       likes = data['likes'];
     }
     List<String> likers = post.likers;
     String email = AccountService.account['email'];
     if (isLiked) {
       likers.add(email);
+      likes = likes + 1;
       _firestore.collection('posts').doc('${post.id}').update({
         'likers': likers,
-        'likes': likes + 1,
+        'likes': likes,
       });
     } else {
       likers.remove(email);
+      likes = likes - 1;
       _firestore.collection('posts').doc('${post.id}').update({
         'likers': likers,
-        'likes': likes - 1,
+        'likes': likes,
       });
     }
+    post.likes = likes;
+    post.likers = likers;
+    return post;
   }
 
-  static sortingPost({required List<Post> posts}) {
+  static List<Post> sortingPostByLikes({required List<Post> posts}) {
+    for (int i = 0; i < posts.length; i++) {
+      for (int j = 0; j < posts.length - 1; j++) {
+        if (posts[j].likes.compareTo(posts[j + 1].likes) < 0) {
+          Post post = posts[j];
+          posts[j] = posts[j + 1];
+          posts[j + 1] = post;
+        }
+      }
+    }
+    return posts;
+  }
+
+  static List<Post> sortingPost({required List<Post> posts}) {
     for (int i = 0; i < posts.length; i++) {
       for (int j = 0; j < posts.length - 1; j++) {
         if (posts[j].lastUpdate.compareTo(posts[j + 1].lastUpdate) < 0) {

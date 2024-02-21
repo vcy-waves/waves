@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:waves/view/profile_page.dart';
 import 'dart:io' show Platform;
 import 'package:waves/view/post_event_page.dart';
+import 'package:waves/services/account.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,7 +17,6 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-
 
 class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -36,6 +36,7 @@ class _HomePageState extends State<HomePage> {
       flutterLocalNotificationsPlugin,
     );
     update();
+    AccountService.fetchAccount();
   }
 
   Future<void> update() async {
@@ -107,8 +108,8 @@ class _HomePageState extends State<HomePage> {
                                   fontSize: 25.0,
                                 ),
                               ),
-                              const Text(
-                                'You have been clean up 5 times',
+                              Text(
+                                'You have been clean up ${AccountService.account['cleanUpTimes']} times',
                                 style: TextStyle(
                                   fontFamily: 'Playpen_Sans',
                                   fontSize: 18.0,
@@ -142,6 +143,13 @@ class _HomePageState extends State<HomePage> {
                             onTap: () async {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => const PostEventPage()));
+                              // await NotificationService.promoteEvent(
+                              //   notiType: NotiType.fine,
+                              //   initiator: 'chiyu',
+                              //   location: 'location',
+                              //   flutterLocalNotificationsPlugin:
+                              //       flutterLocalNotificationsPlugin,
+                              // );
                               // await NotificationS
                             },
                           ),
@@ -193,5 +201,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
