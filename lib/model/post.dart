@@ -11,6 +11,7 @@ class Post {
   int likes;
   bool isLiked;
   List<String> likers;
+  String comment;
 
   Post({
     required this.location,
@@ -21,5 +22,6 @@ class Post {
     required this.likes,
     required this.isLiked,
     required this.likers,
+    required this.comment,
   });
 }

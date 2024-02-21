@@ -30,6 +30,7 @@ class _PostEventPageState extends State<PostEventPage> {
   XFile? image;
   int likes = 0;
   int rating = 0;
+  String _comment = '';
 
   @override
   void initState() {
@@ -51,6 +52,7 @@ class _PostEventPageState extends State<PostEventPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey.shade300,
         title: const Text(
@@ -71,19 +73,6 @@ class _PostEventPageState extends State<PostEventPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue.shade300.withOpacity(0.7),
         onPressed: () async {
-          if (image != null) {
-            await PostService.postPost(
-              location: _locationName,
-              initiator: AccountService.account['name'],
-              lastUpdate: _selectedDay,
-              image: image!,
-              likes: likes,
-              email: AccountService.account['email'],
-              rating: rating,
-            );
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const HomePage()));
-          }
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -100,6 +89,7 @@ class _PostEventPageState extends State<PostEventPage> {
                 ),
                 TextButton(
                   onPressed: () async {
+                    AccountService.updateCleanUpTimes();
                     if (rating != 0) {
                       await PostService.postPost(
                         email: AccountService.account['email'],
@@ -109,6 +99,7 @@ class _PostEventPageState extends State<PostEventPage> {
                         lastUpdate: _selectedDay,
                         image: image!,
                         rating: rating,
+                        comment: _comment,
                       );
                     }
                     Navigator.of(context).push(MaterialPageRoute(
@@ -139,9 +130,33 @@ class _PostEventPageState extends State<PostEventPage> {
               },
               decoration: kSearchBarInputDecoration,
             ),
+          ),Padding(
+            padding: const EdgeInsets.only(
+              left: 25,
+              right: 25,
+            ),
+            child: TextField(
+              keyboardType: TextInputType.multiline,
+              maxLines: 2,
+              textInputAction: TextInputAction.newline,
+              onChanged: (value) {
+                _comment = value;
+              },
+              style: const TextStyle(
+                color: Colors.black54,
+                fontSize: 15,
+              ),
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                hintText: 'leave your feeling...',
+                hintStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black54),
+              ),
+            ),
           ),
           TableCalendar(
-            calendarFormat: CalendarFormat.twoWeeks,
+            calendarFormat: CalendarFormat.month,
             currentDay: _selectedDay,
             focusedDay: _focusedDay,
             firstDay: DateTime(2023),
@@ -157,6 +172,7 @@ class _PostEventPageState extends State<PostEventPage> {
             },
           ),
           const Gap(10),
+
           TextButton(
             onPressed: () async {
               _time = await showTimePicker(
@@ -172,9 +188,9 @@ class _PostEventPageState extends State<PostEventPage> {
           ),
           _time != null
               ? Text(
-                  '${_time!.hour} : ${_time!.minute}',
-                  style: kSmallTitleTextStyle,
-                )
+            '${_time!.hour} : ${_time!.minute}',
+            style: kSmallTitleTextStyle,
+          )
               : const SizedBox(),
           const Gap(30.0),
           _image != null

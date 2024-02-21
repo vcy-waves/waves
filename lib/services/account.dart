@@ -32,6 +32,16 @@ class AccountService {
     print(_account['broadcasting']);
   }
 
+  static int updateCleanUpTimes() {
+    int cleanUpTimes = _account['cleanUpTimes'];
+    cleanUpTimes = cleanUpTimes + 1;
+    print('cleanUpTimes: $cleanUpTimes');
+    _firebase.collection('users').doc('${account['email']}').update({
+      'cleanUpTimes': cleanUpTimes,
+    });
+    return cleanUpTimes;
+  }
+
   static String? _fetchEmail() {
     String? email = _auth.currentUser!.email;
     return email;

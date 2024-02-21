@@ -30,6 +30,7 @@ class PostService {
   static Future<void> _fetchPosts() async {
     await _firestore.collection('counter').doc('counter').get();
     final sourceFromDatabase = await _firestore.collection('posts').get();
+    _posts = [];
     for (var post in sourceFromDatabase.docs) {
       var map = post.data();
 
@@ -45,16 +46,16 @@ class PostService {
       }
 
       print('aaaaaaaaaaaaaaaaaaa');
-
       _posts.add(Post(
         location: map['location'],
         initiator: map['initiator'],
         lastUpdate: DateTime.fromMicrosecondsSinceEpoch(map['lastUpdate']),
         id: map['id'],
-        image: Image.network(url),
+        image: Image.network(url)!,
         likes: map['likes'],
         likers: likersToString,
         isLiked: false,
+        comment: map['comment'],
       ));
     }
   }
@@ -87,6 +88,7 @@ class PostService {
     required int likes,
     required String email,
     required int rating,
+    required String comment,
   }) async {
     int id = 0;
     final int lastUpdateToEpoch = lastUpdate.microsecondsSinceEpoch;
@@ -104,6 +106,7 @@ class PostService {
       'lastUpdate': lastUpdateToEpoch,
       'likes': likes,
       'likers': <String>[''],
+      'comment': comment,
     });
     _firestore.collection('counter').doc('counter').update({
       'post_counter': id,
@@ -161,7 +164,7 @@ class PostService {
     }
   }
 
-  static Future<void> updateLike(
+  static Future<Post> updateLike(
       {required Post post, required isLiked, required index}) async {
     //1.state的轉換
     //2.likes -1 && likers 少一筆資料
@@ -175,17 +178,22 @@ class PostService {
     String email = AccountService.account['email'];
     if (isLiked) {
       likers.add(email);
+      likes = likes + 1;
       _firestore.collection('posts').doc('${post.id}').update({
         'likers': likers,
-        'likes': likes + 1,
+        'likes': likes,
       });
     } else {
       likers.remove(email);
+      likes = likes - 1;
       _firestore.collection('posts').doc('${post.id}').update({
         'likers': likers,
-        'likes': likes - 1,
+        'likes': likes,
       });
     }
+    post.likes = likes;
+    post.likers = likers;
+    return post;
   }
 
   static List<Post> sortingPostByLikes({required List<Post> posts}) {
