@@ -19,6 +19,7 @@ class _HostEventPageState extends State<HostEventPage>
   final DateTime updateTime = DateTime(2024, 2, 13, 9, 10);
   bool isVisible = true;
   late final AnimationController _animationController;
+  bool isSortedByLikes = false;
 
   Future<void> updatePost() async {
     posts = await PostService.post;
@@ -44,7 +45,16 @@ class _HostEventPageState extends State<HostEventPage>
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              isVisible = true;
+              if (isSortedByLikes) {
+                posts = PostService.sortingPost(posts: posts);
+              } else {
+                posts = PostService.sortingPostByLikes(posts: posts);
+              }
+              isSortedByLikes = !isSortedByLikes;
+              setState(() {});
+            },
             icon: const Icon(Icons.waves_rounded),
           ),
         ],
@@ -79,7 +89,8 @@ class _HostEventPageState extends State<HostEventPage>
                     location: posts[index].location,
                     initiator: posts[index].initiator,
                     id: posts[index].id,
-                    like: PostService.fetchIsLiked(index),post: posts[index],
+                    like: PostService.fetchIsLiked(index),
+                    post: posts[index],
                   );
                 },
               ),
@@ -99,7 +110,8 @@ class PostWidget extends StatefulWidget {
       required this.location,
       required this.initiator,
       required this.id,
-      required this.like, required this.post});
+      required this.like,
+      required this.post});
 
   bool like;
   final String updateTime;
@@ -140,7 +152,7 @@ class _PostWidgetState extends State<PostWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Last update : ${widget.updateTime} ago',
+                'Last update : ${widget.updateTime}',
                 style: kSmallTitleTextStyle.copyWith(
                   fontSize: 15.0,
                 ),
