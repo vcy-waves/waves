@@ -8,7 +8,6 @@ import 'package:waves/components/tool_box.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:waves/view/profile_page.dart';
 import 'dart:io' show Platform;
-import 'package:waves/constants.dart';
 import 'package:waves/view/post_event_page.dart';
 import 'package:waves/services/account.dart';
 
@@ -151,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                               //   flutterLocalNotificationsPlugin:
                               //       flutterLocalNotificationsPlugin,
                               // );
-                              setState(() {});
+                              // await NotificationS
                             },
                           ),
                         ],
@@ -166,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                             onTap: () async {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => HostEventPage(),
+                                  builder: (context) => const HostEventPage(),
                                 ),
                               );
                             },

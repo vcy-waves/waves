@@ -27,7 +27,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
     super.initState();
     AccountService.fetchAccount();
     id = AccountService.account['count'];
-
   }
 
   @override

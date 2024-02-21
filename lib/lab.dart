@@ -9,5 +9,10 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MaterialApp(home: LoginPage()));
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
+    ),
+  );
 }
